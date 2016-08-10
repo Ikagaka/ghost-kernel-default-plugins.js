@@ -232,6 +232,7 @@ var ShellController = exports.ShellController = function (_GhostKernelControlle)
       // TODO refactor
       var named = this.kernel.components.Named;
       var shellState = this.kernel.components.ShellState;
+      if (shellState.hasChoice) return; // 選択肢があればクリアされない
       if (!shellState.talking) {
         // 喋っていない状態でシングルクリックされたら
         named.scopes.forEach(function (scope) {
@@ -244,6 +245,7 @@ var ShellController = exports.ShellController = function (_GhostKernelControlle)
     key: 'balloondblclick',
     value: function balloondblclick(event) {
       var shellState = this.kernel.components.ShellState;
+      if (shellState.hasChoice) return; // 選択肢があればクリアされない
       if (shellState.talking) {
         // 喋っている状態でダブルクリックされたら
         var sakuraScriptExecuter = this.kernel.components.SakuraScriptExecuter;

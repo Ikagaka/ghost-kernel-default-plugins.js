@@ -153,6 +153,7 @@ export class ShellController extends GhostKernelController {
   balloonclick(event) { // TODO refactor
     const named = this.kernel.components.Named;
     const shellState = this.kernel.components.ShellState;
+    if (shellState.hasChoice) return; // 選択肢があればクリアされない
     if (!shellState.talking) { // 喋っていない状態でシングルクリックされたら
       named.scopes.forEach((scope) => scope.blimp(-1).clear()); // バルーンをクリア&非表示
       shellState.clearBalloonTimeout();
@@ -161,6 +162,7 @@ export class ShellController extends GhostKernelController {
 
   balloondblclick(event) {
     const shellState = this.kernel.components.ShellState;
+    if (shellState.hasChoice) return; // 選択肢があればクリアされない
     if (shellState.talking) { // 喋っている状態でダブルクリックされたら
       const sakuraScriptExecuter = this.kernel.components.SakuraScriptExecuter;
       sakuraScriptExecuter.abort_execute();

@@ -4308,6 +4308,7 @@ var ghostKernelDefaultPlugins =
 	      // TODO refactor
 	      var named = this.kernel.components.Named;
 	      var shellState = this.kernel.components.ShellState;
+	      if (shellState.hasChoice) return; // 選択肢があればクリアされない
 	      if (!shellState.talking) {
 	        // 喋っていない状態でシングルクリックされたら
 	        named.scopes.forEach(function (scope) {
@@ -4320,6 +4321,7 @@ var ghostKernelDefaultPlugins =
 	    key: 'balloondblclick',
 	    value: function balloondblclick(event) {
 	      var shellState = this.kernel.components.ShellState;
+	      if (shellState.hasChoice) return; // 選択肢があればクリアされない
 	      if (shellState.talking) {
 	        // 喋っている状態でダブルクリックされたら
 	        var sakuraScriptExecuter = this.kernel.components.SakuraScriptExecuter;
@@ -4467,7 +4469,7 @@ var ghostKernelDefaultPlugins =
 	      shellState.choiceTimeout = 20000; // TODO 設定を読む
 	      this.kernel.components.Named.scopes.forEach(function (scope) {
 	        scope.blimp(0); // 初期化
-	        scope.blimp(-1); // 非表示
+	        scope.blimp(-1).clear(); // 非表示
 	      });
 	    }
 	  }, {
@@ -4478,7 +4480,7 @@ var ghostKernelDefaultPlugins =
 	      shellState.talking = false;
 	      if (aborted) {
 	        named.scopes.forEach(function (scope) {
-	          return scope.blimp(-1).clear();
+	          return scope.blimp(-1);
 	        }); // 再生中断なら即座にバルーンをクリア&非表示
 	      } else {
 	        shellState.setBalloonTimeout(this._break.bind(this)); // 再生中断でなくタイムアウトありならタイムアウトイベントを設定
@@ -4490,7 +4492,7 @@ var ghostKernelDefaultPlugins =
 	      var named = this.kernel.components.Named;
 	      var shellState = this.kernel.components.ShellState;
 	      named.scopes.forEach(function (scope) {
-	        return scope.blimp(-1).clear();
+	        return scope.blimp(-1);
 	      });
 	      if (shellState.hasChoice) {
 	        named.emit('choicetimeout'); // TODO: named?
@@ -4591,13 +4593,13 @@ var ghostKernelDefaultPlugins =
 	        blimp.choice.apply(blimp, [token.text, token.event].concat((0, _toConsumableArray3.default)(token.references)));
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.ReferencesChoice) {
 	        shellState.hasChoice = true;
-	        blimp.choiceBegin.apply(blimp, [token.text].concat((0, _toConsumableArray3.default)(token.references)));
+	        blimp.choice.apply(blimp, [token.text].concat((0, _toConsumableArray3.default)(token.references)));
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.ScriptChoice) {
 	        shellState.hasChoice = true;
-	        blimp.choiceBegin(token.text, 'script:' + token.script);
+	        blimp.choice(token.text, 'script:' + token.script);
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.OldReferenceChoice) {
 	        shellState.hasChoice = true;
-	        blimp.choiceBegin(token.text, token.reference);
+	        blimp.choice(token.text, token.reference);
 	        blimp.br();
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginEventChoice) {
 	        shellState.hasChoice = true;
