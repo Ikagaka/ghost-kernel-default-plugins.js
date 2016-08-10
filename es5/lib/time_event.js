@@ -90,8 +90,8 @@ var TimeEventController = exports.TimeEventController = function (_GhostKernelCo
       }
     }
   }, {
-    key: 'menute_change',
-    value: function menute_change() {
+    key: 'minute_change',
+    value: function minute_change() {
       if (!this.kernel.components.TimerEventState.enabled) return;
       var kernel = this.kernel;
       var Information = kernel.components.Information;

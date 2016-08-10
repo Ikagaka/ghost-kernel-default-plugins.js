@@ -43,7 +43,7 @@ export class TimeEventController extends GhostKernelController {
     }
   }
 
-  menute_change() {
+  minute_change() {
     if (!this.kernel.components.TimerEventState.enabled) return;
     const kernel = this.kernel;
     const Information = kernel.components.Information;
