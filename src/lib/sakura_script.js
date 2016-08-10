@@ -30,8 +30,10 @@ export class SakuraScriptController extends GhostKernelController {
     this.kernel.registerComponent('SakuraScriptExecuter', sakurascript_executer);
     this.kernel.registerComponent('SakuraScriptState', new SakuraScriptState());
     // make shortcut
-    this.kernel.executeSakuraScript = (transaction) =>
-      this.kernel.components.SakuraScriptExecuter.execute(transaction.response.to('3.0').headers.header.Value);
+    this.kernel.executeSakuraScript = (transaction) => {
+      const value = transaction.response.to('3.0').headers.header.Value;
+      if (value != null) this.kernel.components.SakuraScriptExecuter.execute(value.toString());
+    };
   }
 
   begin_execute() {
@@ -44,7 +46,7 @@ export class SakuraScriptController extends GhostKernelController {
     shellState.hasChoice = false;
     shellState.balloonTimeout = 10000; // TODO 設定を読む
     shellState.choiceTimeout = 20000; // TODO 設定を読む
-    named.scopes.forEach((scope) => {
+    this.kernel.components.Named.scopes.forEach((scope) => {
       scope.blimp(0); // 初期化
       scope.blimp(-1); // 非表示
     });

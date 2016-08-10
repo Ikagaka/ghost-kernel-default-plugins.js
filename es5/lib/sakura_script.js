@@ -80,7 +80,8 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       this.kernel.registerComponent('SakuraScriptState', new SakuraScriptState());
       // make shortcut
       this.kernel.executeSakuraScript = function (transaction) {
-        return _this2.kernel.components.SakuraScriptExecuter.execute(transaction.response.to('3.0').headers.header.Value);
+        var value = transaction.response.to('3.0').headers.header.Value;
+        if (value != null) _this2.kernel.components.SakuraScriptExecuter.execute(value.toString());
       };
     }
   }, {
@@ -95,7 +96,7 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       shellState.hasChoice = false;
       shellState.balloonTimeout = 10000; // TODO 設定を読む
       shellState.choiceTimeout = 20000; // TODO 設定を読む
-      named.scopes.forEach(function (scope) {
+      this.kernel.components.Named.scopes.forEach(function (scope) {
         scope.blimp(0); // 初期化
         scope.blimp(-1); // 非表示
       });
