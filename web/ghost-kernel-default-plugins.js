@@ -4246,6 +4246,7 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: 'userinput',
 	    value: function userinput(event) {
+	      var shiorif = this.kernel.components.Shiorif;
 	      if (event.content != null) {
 	        shiorif.get3('OnUserInput', [event.id, event.content]).then(this.kernel.executeSakuraScript);
 	      } else {
@@ -4256,6 +4257,7 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: 'communicateinput',
 	    value: function communicateinput(event) {
+	      var shiorif = this.kernel.components.Shiorif;
 	      if (event.content != null) {
 	        // TODO: 拡張情報?
 	        shiorif.get3('OnCommunicate', ['user', event.content]).then(this.kernel.executeSakuraScript);
@@ -4293,6 +4295,7 @@ var ghostKernelDefaultPlugins =
 	    key: '_mouseEvent',
 	    value: function _mouseEvent(event, id) {
 	      if (this._timeCritical) return;
+	      var shiorif = this.kernel.components.Shiorif;
 	      shiorif.get3(id, this._mouseEventHeaders(event)).then(this.kernel.executeSakuraScript);
 	    }
 	  }, {

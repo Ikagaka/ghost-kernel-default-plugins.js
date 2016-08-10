@@ -104,6 +104,7 @@ export class ShellController extends GhostKernelController {
   }
 
   userinput(event) {
+    const shiorif = this.kernel.components.Shiorif;
     if (event.content != null) {
       shiorif.get3('OnUserInput', [event.id, event.content]).then(this.kernel.executeSakuraScript);
     } else {
@@ -113,6 +114,7 @@ export class ShellController extends GhostKernelController {
   }
 
   communicateinput(event) {
+    const shiorif = this.kernel.components.Shiorif;
     if (event.content != null) {
       // TODO: 拡張情報?
       shiorif.get3('OnCommunicate', ['user', event.content]).then(this.kernel.executeSakuraScript);
@@ -144,6 +146,7 @@ export class ShellController extends GhostKernelController {
 
   _mouseEvent(event, id) {
     if (this._timeCritical) return;
+    const shiorif = this.kernel.components.Shiorif;
     shiorif.get3(id, this._mouseEventHeaders(event)).then(this.kernel.executeSakuraScript);
   }
 
