@@ -7740,6 +7740,8 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: 'otherghostname',
 	    value: function otherghostname() {
+	      var _this2 = this;
+	
 	      // TODO ここでこの実装してよいのか
 	      var namedKernelManager = this.kernel.components.NamedKernelManager;
 	      var names = namedKernelManager.namedIds().map(function (namedId) {
@@ -7747,7 +7749,7 @@ var ghostKernelDefaultPlugins =
 	      }).filter(function (kernel) {
 	        return kernel.ghostDescript;
 	      }).map(function (kernel) {
-	        return [kernel.ghostDescript.name, kernel.Named.scopes[0].surface().surfaceId, kernel.Named.scopes[1] ? kernel.Named.scopes[1].surface().surfaceId : ''].join('\u0001');
+	        return [kernel.ghostDescript.name, kernel.Named.scopes[0].surface().surfaceId, kernel.Named.scopes[1] ? _this2.kernel.components.Named.scopes[1].surface().surfaceId : ''].join('\u0001');
 	      });
 	      return this.kernel.components.Shiorif.notify3('otherghostname', [names]);
 	    }

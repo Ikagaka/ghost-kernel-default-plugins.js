@@ -49,7 +49,7 @@ export class NotifyInformationController extends GhostKernelController {
       .map((kernel) => [
         kernel.ghostDescript.name,
         kernel.Named.scopes[0].surface().surfaceId,
-        kernel.Named.scopes[1] ? kernel.Named.scopes[1].surface().surfaceId : '',
+        kernel.Named.scopes[1] ? this.kernel.components.Named.scopes[1].surface().surfaceId : '',
       ].join('\u0001'));
     return this.kernel.components.Shiorif.notify3('otherghostname', [names]);
   }
