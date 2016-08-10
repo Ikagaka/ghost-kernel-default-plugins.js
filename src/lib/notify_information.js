@@ -43,7 +43,7 @@ export class NotifyInformationController extends GhostKernelController {
   otherghostname() {
     // TODO ここでこの実装してよいのか
     const namedKernelManager = this.kernel.components.NamedKernelManager;
-    const names = namedKernelManager.namedIds
+    const names = namedKernelManager.namedIds()
       .map((namedId) => namedKernelManager.kernel(namedId))
       .filter((kernel) => kernel.ghostDescript)
       .map((kernel) => [
