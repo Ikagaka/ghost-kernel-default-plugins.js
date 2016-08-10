@@ -1,9 +1,9 @@
 {
-  "name": "ghost-kernel",
-  "description": "ikagaka ghost kernel",
+  "name": "ghost-kernel-defalut-plugins",
+  "description": "ikagaka ghost kernel plugins",
   "dependencies": {
   },
-  "main": ["./dist/ghost-kernel.js"],
+  "main": ["./web/ghost-kernel-default-plugins.js"],
   "ignore": [
     "**/.sw?",
     "**/.*.sw?",

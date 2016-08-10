@@ -30,19 +30,18 @@ export class Version {
 export class VersionController extends GhostKernelController {
   constructor(kernel) {
     super(kernel);
-    kernel.components.Version = new Version();
+    kernel.registerComponent('Version', new Version());
   }
 
   start() {
     const kernel = this.kernel;
     const Version = kernel.components.Version;
     const shiorif = kernel.components.Shiorif;
-    shiorif.allow_async_request = false;
-    shiorif.translate_request_version('2.6');
-    shiorif.request3('GET', 'version')
+    // shiorif.allow_async_request = false; // 将来的に非同期リクエストをサポートする場合
+    shiorif.auto_convert_request_version = '2.6';
+    shiorif.get3('version')
       .then(
-        (transaction) => {
-          const response = transaction.response;
+        ({response}) => {
           const status_line = response.status_line;
           const code = status_line.code;
           const version = status_line.version;
@@ -53,41 +52,41 @@ export class VersionController extends GhostKernelController {
             Version.name = header.ID;
             Version.craftman = header.Craftman;
             Version.craftmanw = header.Craftman;
-            kernel.emit('version_done', kernel);
+            kernel.emit('protocol_version_fixed');
           } else {
             // support 3.0 or 4.0
             if (version !== '4.0') {
-              shiorif.translate_request_version('3.0');
+              shiorif.auto_convert_request_version = '3.0';
             } else {
-              shiorif.translate_request_version('4.0');
+              shiorif.auto_convert_request_version = '4.0';
             }
             return Promise.all([
               shiorif.request3('GET', 'version')
                 .then(
                   ({response}) => {
-                    Version.version = response.headers.header.value;
+                    Version.version = response.headers.header.Value;
                   }
                 ),
               shiorif.request3('GET', 'name')
                 .then(
                   ({response}) => {
-                    Version.name = response.headers.header.value;
+                    Version.name = response.headers.header.Value;
                   }
                 ),
               shiorif.request3('GET', 'craftman')
                 .then(
                   ({response}) => {
-                    Version.craftman = response.headers.header.value;
+                    Version.craftman = response.headers.header.Value;
                   }
                 ),
               shiorif.request3('GET', 'craftmanw')
                 .then(
                   ({response}) => {
-                    Version.craftmanw = response.headers.header.value;
+                    Version.craftmanw = response.headers.header.Value;
                   }
                 ),
             ]).then(
-              () => kernel.protocol_version_fixed()
+              () => kernel.emit('protocol_version_fixed')
             );
           }
         }

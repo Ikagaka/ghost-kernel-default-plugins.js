@@ -3,7 +3,7 @@ import {GhostKernelRoutings, GhostKernelControllers, GhostKernelController} from
 export class InformationRouting {
   setup(routes) {
     routes.controller('InformationController', (routes) => {
-      routes.event('GhostKernel', 'protocol_version_fixed', 'initialize_informations');
+      routes.event('GhostKernel', 'notify_informations_done', 'initialize_informations');
     });
   }
 }
@@ -11,7 +11,7 @@ export class InformationRouting {
 export class InformationController extends GhostKernelController {
   constructor(kernel) {
     super(kernel);
-    kernel.components.Information = new Information();
+    kernel.registerComponent('Information', new Information());
   }
 
   initialize_informations() {
@@ -21,16 +21,16 @@ export class InformationController extends GhostKernelController {
     Promise.all(
       [
         shiorif.request3('GET', 'username').then(({response}) =>
-          Information.username = response.headers.header.Value
+          Information.username = response.to('3.0').headers.header.Value
         ),
       ].concat([
         'sakura.recommendsites',
         'sakura.portalsites',
         'kero.recommendsites',
       ].map((id) =>
-        shiorif.request3('GET', id).then(({response}) => {
+        shiorif.get3(id).then(({response}) => {
           Information[id].length = 0; // clear
-          response.headers.get_separated2('Value').forEach((site) =>
+          response.to('3.0').headers.get_separated2('Value').forEach((site) =>
             Information[id].push(new SiteMenu(...site))
           );
         })

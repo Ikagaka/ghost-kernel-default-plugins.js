@@ -9,6 +9,7 @@ import {Server} from 'karma';
 import mainBowerFiles from 'main-bower-files';
 import package_json from './package.json';
 import webpack_config from './webpack.config.js';
+import esdoc_json from './esdoc.json';
 
 const build_targets = ['es5', 'web'];
 
@@ -162,10 +163,11 @@ gulp.task('lint-fix', () =>
 
 gulp.task('clean-doc', (done) => rimraf(dirs.doc, done));
 
-gulp.task('doc', ['clean-doc'], () =>
-  gulp.src(dirs.src, {read: false, base: dirs.src})
+gulp.task('doc', ['clean-doc'], () => {
+  esdoc_json.destination = dirs.doc;
+  return gulp.src(dirs.src, {read: false, base: dirs.src})
     .pipe($.plumber({ errorHandler: notify_error('doc') }))
-    .pipe($.esdoc({destination: dirs.doc}))
-);
+    .pipe($.esdoc(esdoc_json))
+});
 
 gulp.task('clean-coverage', (done) => rimraf('coverage', done));
