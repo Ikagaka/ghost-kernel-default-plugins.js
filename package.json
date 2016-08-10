@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.9.2",
+    "sakurascript": "^0.4.2",
     "sakurascript-executer": "^1.3.0"
   },
   "devDependencies": {

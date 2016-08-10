@@ -33,6 +33,8 @@ var _ghostKernel = require('ghost-kernel');
 
 var _sakurascriptExecuter = require('sakurascript-executer');
 
+var _sakurascript = require('sakurascript');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SakuraScriptState = exports.SakuraScriptState = function SakuraScriptState() {
@@ -142,21 +144,21 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       var scope = named.scope();
       var surface = scope.surface();
       var blimp = scope.blimp();
-      if (token instanceof SakuraScriptToken.Scope) {
+      if (token instanceof _sakurascript.SakuraScriptToken.Scope) {
         named.scope(token.scope);
-      } else if (token instanceof SakuraScriptToken.Surface) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Surface) {
         scope.surface(token.surface);
-      } else if (token instanceof SakuraScriptToken.SurfaceAlias) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.SurfaceAlias) {
         scope.surface(token.surface_alias);
-      } else if (token instanceof SakuraScriptToken.Balloon) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Balloon) {
         scope.blimp(token.balloon);
-      } else if (token instanceof SakuraScriptToken.PlayAnimation) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimation) {
         surface.play(token.animation);
-      } else if (token instanceof SakuraScriptToken.PlayAnimationWait) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
         surface.play(token.animation);
-      } else if (token instanceof SakuraScriptToken.Animation) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Animation) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Bind) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Bind) {
         if (token.dress_up == null) {
           // TODO toggle
         } else if (token.dress_up) {
@@ -172,17 +174,17 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
   }, {
     key: '_handle_wait',
     value: function _handle_wait(token) {
-      if (token instanceof SakuraScriptToken.SimpleWait) {
+      if (token instanceof _sakurascript.SakuraScriptToken.SimpleWait) {
         return true;
-      } else if (token instanceof SakuraScriptToken.PreciseWait) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.PreciseWait) {
         return true;
-      } else if (token instanceof SakuraScriptToken.WaitFromBeginning) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.WaitFromBeginning) {
         return true;
-      } else if (token instanceof SakuraScriptToken.ResetBeginning) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.ResetBeginning) {
         return true;
-      } else if (token instanceof SakuraScriptToken.WaitAnimationEnd) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.WaitAnimationEnd) {
         return true;
-      } else if (token instanceof SakuraScriptToken.ToggleQuick) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.ToggleQuick) {
         return true;
       } else {
         return false;
@@ -192,15 +194,15 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
     key: '_handle_state',
     value: function _handle_state(token) {
       var shellState = this.kernel.components.ShellState;
-      if (token instanceof SakuraScriptToken.ToggleSynchronize) {
+      if (token instanceof _sakurascript.SakuraScriptToken.ToggleSynchronize) {
         if (shellState.synchronized) {
           shellState.synchronized = false;
         } else {
           shellState.synchronized = token.scopes;
         }
-      } else if (token instanceof SakuraScriptToken.TimeCritical) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.TimeCritical) {
         shellState.timeCritical = !shellState.timeCritical;
-      } else if (token instanceof SakuraScriptToken.NoChoiceTimeout) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.NoChoiceTimeout) {
         shellState.choiceTimeout = 0;
       } else {
         return false;
@@ -215,59 +217,59 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       var surface = scope.surface();
       var blimp = scope.blimp();
       var shellState = this.kernel.components.ShellState;
-      if (token instanceof SakuraScriptToken.WaitClick) {
+      if (token instanceof _sakurascript.SakuraScriptToken.WaitClick) {
         named.scope(0).blimp().showWait();
-      } else if (token instanceof SakuraScriptToken.EventChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.EventChoice) {
         shellState.hasChoice = true;
         blimp.choice.apply(blimp, [token.text, token.event].concat((0, _toConsumableArray3.default)(token.references)));
-      } else if (token instanceof SakuraScriptToken.ReferencesChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.ReferencesChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin.apply(blimp, [token.text].concat((0, _toConsumableArray3.default)(token.references)));
-      } else if (token instanceof SakuraScriptToken.ScriptChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.ScriptChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin(token.text, 'script:' + token.script);
-      } else if (token instanceof SakuraScriptToken.OldReferenceChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.OldReferenceChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin(token.text, token.reference);
         blimp.br();
-      } else if (token instanceof SakuraScriptToken.BeginEventChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginEventChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin.apply(blimp, [token.event].concat((0, _toConsumableArray3.default)(token.references)));
-      } else if (token instanceof SakuraScriptToken.BeginReferencesChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginReferencesChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin.apply(blimp, (0, _toConsumableArray3.default)(token.references));
-      } else if (token instanceof SakuraScriptToken.BeginScriptChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginScriptChoice) {
         shellState.hasChoice = true;
         blimp.choiceBegin('script:' + token.script);
-      } else if (token instanceof SakuraScriptToken.EndChoice) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.EndChoice) {
         blimp.choiceEnd();
-      } else if (token instanceof SakuraScriptToken.BeginEventAnchor) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginEventAnchor) {
         blimp.anchorBegin.apply(blimp, [token.event].concat((0, _toConsumableArray3.default)(token.references)));
-      } else if (token instanceof SakuraScriptToken.BeginReferencesAnchor) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginReferencesAnchor) {
         blimp.anchorBegin.apply(blimp, (0, _toConsumableArray3.default)(token.references));
-      } else if (token instanceof SakuraScriptToken.BeginScriptAnchor) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginScriptAnchor) {
         blimp.anchorBegin('script:' + token.script);
-      } else if (token instanceof SakuraScriptToken.EndAnchor) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.EndAnchor) {
         blimp.anchorEnd();
-      } else if (token instanceof SakuraScriptToken.LineBreak) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.LineBreak) {
         blimp.br();
-      } else if (token instanceof SakuraScriptToken.HalfLineBreak) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.HalfLineBreak) {
         blimp.br(0.5);
-      } else if (token instanceof SakuraScriptToken.PercentLineBreak) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.PercentLineBreak) {
         blimp.br(token.percent / 100);
-      } else if (token instanceof SakuraScriptToken.ToggleNoAutoLineBreak) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.ToggleNoAutoLineBreak) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Location) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Location) {
         blimp.location(token.x, token.y);
-      } else if (token instanceof SakuraScriptToken.Image) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Image) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.InlineImage) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.InlineImage) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Font) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Font) {
         blimp.font.apply(blimp, [token.name].concat((0, _toConsumableArray3.default)(token.args)));
-      } else if (token instanceof SakuraScriptToken.Marker) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Marker) {
         blimp.marker();
-      } else if (token instanceof SakuraScriptToken.Char) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Char) {
         if (shellState.synchronized) {
           var scopes = void 0;
           if (shellState.synchronized.length) {
@@ -301,36 +303,36 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       var blimp = scope.blimp();
       var shiorif = this.kernel.components.Shiorif;
       var sakuraScriptState = this.components.SakuraScriptState;
-      if (token instanceof SakuraScriptToken.BeFar) {
+      if (token instanceof _sakurascript.SakuraScriptToken.BeFar) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.BeNear) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.BeNear) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Clear) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Clear) {
         blimp.clear();
-      } else if (token instanceof SakuraScriptToken.End) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.End) {
         surface.yenE();
-      } else if (token instanceof SakuraScriptToken.OldChoiceEnd) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.OldChoiceEnd) {
         surface.yenE();
-      } else if (token instanceof SakuraScriptToken.OpenCommunicateBox) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.OpenCommunicateBox) {
         named.openCommunicateBox();
-      } else if (token instanceof SakuraScriptToken.OpenTeachBox) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.OpenTeachBox) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Halt) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Halt) {
         surface.yenE();
         this.kernel.halt('script');
-      } else if (token instanceof SakuraScriptToken.LockRepaint) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.LockRepaint) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.UnlockRepaint) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.UnlockRepaint) {
         // TODO cuttlebone not implemented
-      } else if (token instanceof SakuraScriptToken.Move) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Move) {
         // TODO
-      } else if (token instanceof SakuraScriptToken.MoveAsync) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.MoveAsync) {
         // TODO
-      } else if (token instanceof SakuraScriptToken.MoveAsyncCancel) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.MoveAsyncCancel) {
         // TODO
-      } else if (token instanceof SakuraScriptToken.Raise) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Raise) {
         shiorif.get3(token.event, token.references).then(this.kernel.executeSakuraScript);
-      } else if (token instanceof SakuraScriptToken.TimerRaise) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.TimerRaise) {
         if (token.period && token.period >= 1) {
           (function () {
             var repeat_count = token.repeat_count || 0;
@@ -350,18 +352,18 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
             delete sakuraScriptState.timerRaiseTimerId[token.event];
           }
         }
-      } else if (token instanceof SakuraScriptToken.Notify) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Notify) {
         shiorif.notify3(token.event, token.references); // TODO: catch error
-      } else if (token instanceof SakuraScriptToken.Set) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Set) {
         var handler = SakuraScriptController._set_handler[token.id];
         if (handler) handler.bind(this)(token);
-      } else if (token instanceof SakuraScriptToken.Open) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Open) {
         var _handler = SakuraScriptController._open_handler[token.id];
         if (_handler) _handler.bind(this)(token);
-      } else if (token instanceof SakuraScriptToken.Close) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.Close) {
         var _handler2 = SakuraScriptController._close_handler[token.id];
         if (_handler2) _handler2.bind(this)(token);
-      } else if (token instanceof SakuraScriptToken.NotImplemented) {
+      } else if (token instanceof _sakurascript.SakuraScriptToken.NotImplemented) {
         return true;
       } else {
         return false;

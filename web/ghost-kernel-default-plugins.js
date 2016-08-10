@@ -57,9 +57,9 @@ var ghostKernelDefaultPlugins =
 	
 	__webpack_require__(121);
 	
-	__webpack_require__(130);
-	
 	__webpack_require__(131);
+	
+	__webpack_require__(132);
 
 /***/ },
 /* 1 */
@@ -4400,6 +4400,8 @@ var ghostKernelDefaultPlugins =
 	
 	var _sakurascriptExecuter = __webpack_require__(122);
 	
+	var _sakurascript = __webpack_require__(130);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var SakuraScriptState = exports.SakuraScriptState = function SakuraScriptState() {
@@ -4509,21 +4511,21 @@ var ghostKernelDefaultPlugins =
 	      var scope = named.scope();
 	      var surface = scope.surface();
 	      var blimp = scope.blimp();
-	      if (token instanceof SakuraScriptToken.Scope) {
+	      if (token instanceof _sakurascript.SakuraScriptToken.Scope) {
 	        named.scope(token.scope);
-	      } else if (token instanceof SakuraScriptToken.Surface) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Surface) {
 	        scope.surface(token.surface);
-	      } else if (token instanceof SakuraScriptToken.SurfaceAlias) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.SurfaceAlias) {
 	        scope.surface(token.surface_alias);
-	      } else if (token instanceof SakuraScriptToken.Balloon) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Balloon) {
 	        scope.blimp(token.balloon);
-	      } else if (token instanceof SakuraScriptToken.PlayAnimation) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimation) {
 	        surface.play(token.animation);
-	      } else if (token instanceof SakuraScriptToken.PlayAnimationWait) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
 	        surface.play(token.animation);
-	      } else if (token instanceof SakuraScriptToken.Animation) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Animation) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Bind) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Bind) {
 	        if (token.dress_up == null) {
 	          // TODO toggle
 	        } else if (token.dress_up) {
@@ -4539,17 +4541,17 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: '_handle_wait',
 	    value: function _handle_wait(token) {
-	      if (token instanceof SakuraScriptToken.SimpleWait) {
+	      if (token instanceof _sakurascript.SakuraScriptToken.SimpleWait) {
 	        return true;
-	      } else if (token instanceof SakuraScriptToken.PreciseWait) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.PreciseWait) {
 	        return true;
-	      } else if (token instanceof SakuraScriptToken.WaitFromBeginning) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.WaitFromBeginning) {
 	        return true;
-	      } else if (token instanceof SakuraScriptToken.ResetBeginning) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.ResetBeginning) {
 	        return true;
-	      } else if (token instanceof SakuraScriptToken.WaitAnimationEnd) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.WaitAnimationEnd) {
 	        return true;
-	      } else if (token instanceof SakuraScriptToken.ToggleQuick) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.ToggleQuick) {
 	        return true;
 	      } else {
 	        return false;
@@ -4559,15 +4561,15 @@ var ghostKernelDefaultPlugins =
 	    key: '_handle_state',
 	    value: function _handle_state(token) {
 	      var shellState = this.kernel.components.ShellState;
-	      if (token instanceof SakuraScriptToken.ToggleSynchronize) {
+	      if (token instanceof _sakurascript.SakuraScriptToken.ToggleSynchronize) {
 	        if (shellState.synchronized) {
 	          shellState.synchronized = false;
 	        } else {
 	          shellState.synchronized = token.scopes;
 	        }
-	      } else if (token instanceof SakuraScriptToken.TimeCritical) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.TimeCritical) {
 	        shellState.timeCritical = !shellState.timeCritical;
-	      } else if (token instanceof SakuraScriptToken.NoChoiceTimeout) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.NoChoiceTimeout) {
 	        shellState.choiceTimeout = 0;
 	      } else {
 	        return false;
@@ -4582,59 +4584,59 @@ var ghostKernelDefaultPlugins =
 	      var surface = scope.surface();
 	      var blimp = scope.blimp();
 	      var shellState = this.kernel.components.ShellState;
-	      if (token instanceof SakuraScriptToken.WaitClick) {
+	      if (token instanceof _sakurascript.SakuraScriptToken.WaitClick) {
 	        named.scope(0).blimp().showWait();
-	      } else if (token instanceof SakuraScriptToken.EventChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.EventChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choice.apply(blimp, [token.text, token.event].concat((0, _toConsumableArray3.default)(token.references)));
-	      } else if (token instanceof SakuraScriptToken.ReferencesChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.ReferencesChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin.apply(blimp, [token.text].concat((0, _toConsumableArray3.default)(token.references)));
-	      } else if (token instanceof SakuraScriptToken.ScriptChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.ScriptChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin(token.text, 'script:' + token.script);
-	      } else if (token instanceof SakuraScriptToken.OldReferenceChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.OldReferenceChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin(token.text, token.reference);
 	        blimp.br();
-	      } else if (token instanceof SakuraScriptToken.BeginEventChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginEventChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin.apply(blimp, [token.event].concat((0, _toConsumableArray3.default)(token.references)));
-	      } else if (token instanceof SakuraScriptToken.BeginReferencesChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginReferencesChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin.apply(blimp, (0, _toConsumableArray3.default)(token.references));
-	      } else if (token instanceof SakuraScriptToken.BeginScriptChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginScriptChoice) {
 	        shellState.hasChoice = true;
 	        blimp.choiceBegin('script:' + token.script);
-	      } else if (token instanceof SakuraScriptToken.EndChoice) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.EndChoice) {
 	        blimp.choiceEnd();
-	      } else if (token instanceof SakuraScriptToken.BeginEventAnchor) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginEventAnchor) {
 	        blimp.anchorBegin.apply(blimp, [token.event].concat((0, _toConsumableArray3.default)(token.references)));
-	      } else if (token instanceof SakuraScriptToken.BeginReferencesAnchor) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginReferencesAnchor) {
 	        blimp.anchorBegin.apply(blimp, (0, _toConsumableArray3.default)(token.references));
-	      } else if (token instanceof SakuraScriptToken.BeginScriptAnchor) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeginScriptAnchor) {
 	        blimp.anchorBegin('script:' + token.script);
-	      } else if (token instanceof SakuraScriptToken.EndAnchor) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.EndAnchor) {
 	        blimp.anchorEnd();
-	      } else if (token instanceof SakuraScriptToken.LineBreak) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.LineBreak) {
 	        blimp.br();
-	      } else if (token instanceof SakuraScriptToken.HalfLineBreak) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.HalfLineBreak) {
 	        blimp.br(0.5);
-	      } else if (token instanceof SakuraScriptToken.PercentLineBreak) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.PercentLineBreak) {
 	        blimp.br(token.percent / 100);
-	      } else if (token instanceof SakuraScriptToken.ToggleNoAutoLineBreak) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.ToggleNoAutoLineBreak) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Location) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Location) {
 	        blimp.location(token.x, token.y);
-	      } else if (token instanceof SakuraScriptToken.Image) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Image) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.InlineImage) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.InlineImage) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Font) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Font) {
 	        blimp.font.apply(blimp, [token.name].concat((0, _toConsumableArray3.default)(token.args)));
-	      } else if (token instanceof SakuraScriptToken.Marker) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Marker) {
 	        blimp.marker();
-	      } else if (token instanceof SakuraScriptToken.Char) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Char) {
 	        if (shellState.synchronized) {
 	          var scopes = void 0;
 	          if (shellState.synchronized.length) {
@@ -4668,36 +4670,36 @@ var ghostKernelDefaultPlugins =
 	      var blimp = scope.blimp();
 	      var shiorif = this.kernel.components.Shiorif;
 	      var sakuraScriptState = this.components.SakuraScriptState;
-	      if (token instanceof SakuraScriptToken.BeFar) {
+	      if (token instanceof _sakurascript.SakuraScriptToken.BeFar) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.BeNear) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeNear) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Clear) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Clear) {
 	        blimp.clear();
-	      } else if (token instanceof SakuraScriptToken.End) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.End) {
 	        surface.yenE();
-	      } else if (token instanceof SakuraScriptToken.OldChoiceEnd) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.OldChoiceEnd) {
 	        surface.yenE();
-	      } else if (token instanceof SakuraScriptToken.OpenCommunicateBox) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.OpenCommunicateBox) {
 	        named.openCommunicateBox();
-	      } else if (token instanceof SakuraScriptToken.OpenTeachBox) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.OpenTeachBox) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Halt) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Halt) {
 	        surface.yenE();
 	        this.kernel.halt('script');
-	      } else if (token instanceof SakuraScriptToken.LockRepaint) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.LockRepaint) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.UnlockRepaint) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.UnlockRepaint) {
 	        // TODO cuttlebone not implemented
-	      } else if (token instanceof SakuraScriptToken.Move) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Move) {
 	        // TODO
-	      } else if (token instanceof SakuraScriptToken.MoveAsync) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.MoveAsync) {
 	        // TODO
-	      } else if (token instanceof SakuraScriptToken.MoveAsyncCancel) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.MoveAsyncCancel) {
 	        // TODO
-	      } else if (token instanceof SakuraScriptToken.Raise) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Raise) {
 	        shiorif.get3(token.event, token.references).then(this.kernel.executeSakuraScript);
-	      } else if (token instanceof SakuraScriptToken.TimerRaise) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.TimerRaise) {
 	        if (token.period && token.period >= 1) {
 	          (function () {
 	            var repeat_count = token.repeat_count || 0;
@@ -4717,18 +4719,18 @@ var ghostKernelDefaultPlugins =
 	            delete sakuraScriptState.timerRaiseTimerId[token.event];
 	          }
 	        }
-	      } else if (token instanceof SakuraScriptToken.Notify) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Notify) {
 	        shiorif.notify3(token.event, token.references); // TODO: catch error
-	      } else if (token instanceof SakuraScriptToken.Set) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Set) {
 	        var handler = SakuraScriptController._set_handler[token.id];
 	        if (handler) handler.bind(this)(token);
-	      } else if (token instanceof SakuraScriptToken.Open) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Open) {
 	        var _handler = SakuraScriptController._open_handler[token.id];
 	        if (_handler) _handler.bind(this)(token);
-	      } else if (token instanceof SakuraScriptToken.Close) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.Close) {
 	        var _handler2 = SakuraScriptController._close_handler[token.id];
 	        if (_handler2) _handler2.bind(this)(token);
-	      } else if (token instanceof SakuraScriptToken.NotImplemented) {
+	      } else if (token instanceof _sakurascript.SakuraScriptToken.NotImplemented) {
 	        return true;
 	      } else {
 	        return false;
@@ -7570,6 +7572,1534 @@ var ghostKernelDefaultPlugins =
 /* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(module) {(function() {
+	  var SakuraScript, SakuraScriptToken, joinargs, splitargs,
+	    slice = [].slice,
+	    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	    hasProp = {}.hasOwnProperty;
+	
+	  splitargs = function(str) {
+	    return str.replace(/"((?:\\\\|\\"|[^"])*)"/g, function(all, quoted) {
+	      return quoted.replace(/,/g, '\0');
+	    }).split(/\s*\,\s*/).map(function(arg) {
+	      return arg.replace(/\0/g, ',').replace(/\\(.)/, '$1');
+	    });
+	  };
+	
+	  joinargs = function(args) {
+	    return args.map(function(arg) {
+	      return arg.replace(/\\/, '\\\\').replace(/\]/, '\\]');
+	    }).map(function(arg) {
+	      if (/[,"]/.test(arg)) {
+	        return '"' + arg.replace(/"/, '\\"') + '"';
+	      } else {
+	        return arg;
+	      }
+	    }).join(',');
+	  };
+	
+	  SakuraScript = (function() {
+	    SakuraScript.fromObject = function(json) {
+	      var i, len, token, tokens;
+	      tokens = [];
+	      for (i = 0, len = json.length; i < len; i++) {
+	        token = json[i];
+	        tokens.push(SakuraScriptToken.fromObject(token));
+	      }
+	      return new SakuraScript(tokens);
+	    };
+	
+	    SakuraScript.parse = function(script) {
+	      var i, len, ref, tag, tokens;
+	      tokens = [];
+	      while (script.length) {
+	        tag = null;
+	        ref = SakuraScript.tags;
+	        for (i = 0, len = ref.length; i < len; i++) {
+	          tag = ref[i];
+	          if (tag.re.test(script)) {
+	            break;
+	          }
+	        }
+	        script = script.replace(tag.re, (function(_this) {
+	          return function() {
+	            var all, group, j, offset;
+	            group = 3 <= arguments.length ? slice.call(arguments, 0, j = arguments.length - 2) : (j = 0, []), offset = arguments[j++], all = arguments[j++];
+	            tokens.push(tag.match.call(_this, group));
+	            return '';
+	          };
+	        })(this));
+	      }
+	      return new SakuraScript(tokens);
+	    };
+	
+	    function SakuraScript(tokens1) {
+	      this.tokens = tokens1 != null ? tokens1 : [];
+	    }
+	
+	    SakuraScript.prototype.toObject = function() {
+	      var i, len, ref, results, token;
+	      ref = this.tokens;
+	      results = [];
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        token = ref[i];
+	        results.push(token.toObject());
+	      }
+	      return results;
+	    };
+	
+	    SakuraScript.prototype.toSakuraScript = function() {
+	      var token;
+	      return ((function() {
+	        var i, len, ref, results;
+	        ref = this.tokens;
+	        results = [];
+	        for (i = 0, len = ref.length; i < len; i++) {
+	          token = ref[i];
+	          results.push(token.toSakuraScript());
+	        }
+	        return results;
+	      }).call(this)).join('');
+	    };
+	
+	    return SakuraScript;
+	
+	  })();
+	
+	  SakuraScriptToken = (function() {
+	    SakuraScriptToken.fromObject = function(json) {
+	      var i, instance, key, len, ref;
+	      instance = new SakuraScriptToken[json["class"]]();
+	      ref = Object.keys(json);
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        key = ref[i];
+	        if (key !== "class") {
+	          instance[key] = json[key];
+	        }
+	      }
+	      return instance;
+	    };
+	
+	    function SakuraScriptToken() {}
+	
+	    SakuraScriptToken.prototype.toObject = function() {
+	      var class_name, i, json, key, len, ref;
+	      class_name = this.constructor.toString().slice(9).match(/^[^\s(]+/)[0];
+	      json = {
+	        "class": class_name
+	      };
+	      ref = Object.keys(this);
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        key = ref[i];
+	        json[key] = this[key];
+	      }
+	      return json;
+	    };
+	
+	    SakuraScriptToken.prototype.toSakuraScript = function() {
+	      throw new Error("not implemented");
+	    };
+	
+	    return SakuraScriptToken;
+	
+	  })();
+	
+	  SakuraScriptToken.Scope = (function(superClass) {
+	    extend(Scope, superClass);
+	
+	    function Scope(scope, view) {
+	      this.scope = scope;
+	      this.view = view;
+	    }
+	
+	    Scope.prototype.toSakuraScript = function() {
+	      switch (this.view) {
+	        case "bracket":
+	          return "\\p[" + this.scope + "]";
+	        case "nobracket":
+	          return "\\p" + this.scope;
+	        default:
+	          return "\\" + this.view;
+	      }
+	    };
+	
+	    return Scope;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Surface = (function(superClass) {
+	    extend(Surface, superClass);
+	
+	    function Surface(surface, view) {
+	      this.surface = surface;
+	      this.view = view;
+	    }
+	
+	    Surface.prototype.toSakuraScript = function() {
+	      switch (this.view) {
+	        case "bracket":
+	          return "\\s[" + this.surface + "]";
+	        case "nobracket":
+	          return "\\s" + this.surface;
+	      }
+	    };
+	
+	    return Surface;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.SurfaceAlias = (function(superClass) {
+	    extend(SurfaceAlias, superClass);
+	
+	    function SurfaceAlias(surface_alias) {
+	      this.surface_alias = surface_alias;
+	    }
+	
+	    SurfaceAlias.prototype.toSakuraScript = function() {
+	      return "\\s[" + (joinargs([this.surface_alias])) + "]";
+	    };
+	
+	    return SurfaceAlias;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Balloon = (function(superClass) {
+	    extend(Balloon, superClass);
+	
+	    function Balloon(balloon, view) {
+	      this.balloon = balloon;
+	      this.view = view;
+	    }
+	
+	    Balloon.prototype.toSakuraScript = function() {
+	      switch (this.view) {
+	        case "bracket":
+	          return "\\b[" + this.balloon + "]";
+	        case "nobracket":
+	          return "\\b" + this.balloon;
+	      }
+	    };
+	
+	    return Balloon;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.PlayAnimation = (function(superClass) {
+	    extend(PlayAnimation, superClass);
+	
+	    function PlayAnimation(animation, view) {
+	      this.animation = animation;
+	      this.view = view;
+	    }
+	
+	    PlayAnimation.prototype.toSakuraScript = function() {
+	      switch (this.view) {
+	        case "bracket":
+	          return "\\i[" + this.animation + "]";
+	        case "nobracket":
+	          return "\\i" + this.animation;
+	      }
+	    };
+	
+	    return PlayAnimation;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.PlayAnimationWait = (function(superClass) {
+	    extend(PlayAnimationWait, superClass);
+	
+	    function PlayAnimationWait(animation) {
+	      this.animation = animation;
+	    }
+	
+	    PlayAnimationWait.prototype.toSakuraScript = function() {
+	      return "\\i[" + this.animation + ",wait]";
+	    };
+	
+	    return PlayAnimationWait;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.SimpleWait = (function(superClass) {
+	    extend(SimpleWait, superClass);
+	
+	    function SimpleWait(period) {
+	      this.period = period;
+	    }
+	
+	    SimpleWait.prototype.toSakuraScript = function() {
+	      return "\\w" + this.period;
+	    };
+	
+	    return SimpleWait;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.PreciseWait = (function(superClass) {
+	    extend(PreciseWait, superClass);
+	
+	    function PreciseWait(period) {
+	      this.period = period;
+	    }
+	
+	    PreciseWait.prototype.toSakuraScript = function() {
+	      return "\\_w[" + this.period + "]";
+	    };
+	
+	    return PreciseWait;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.WaitFromBeginning = (function(superClass) {
+	    extend(WaitFromBeginning, superClass);
+	
+	    function WaitFromBeginning(period) {
+	      this.period = period;
+	    }
+	
+	    WaitFromBeginning.prototype.toSakuraScript = function() {
+	      return "\\__w[" + this.period + "]";
+	    };
+	
+	    return WaitFromBeginning;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ResetBeginning = (function(superClass) {
+	    extend(ResetBeginning, superClass);
+	
+	    function ResetBeginning() {}
+	
+	    ResetBeginning.prototype.toSakuraScript = function() {
+	      return "\\__w[clear]";
+	    };
+	
+	    return ResetBeginning;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.WaitAnimationEnd = (function(superClass) {
+	    extend(WaitAnimationEnd, superClass);
+	
+	    function WaitAnimationEnd(id) {
+	      this.id = id;
+	    }
+	
+	    WaitAnimationEnd.prototype.toSakuraScript = function() {
+	      return "\\__w[animation," + this.id + "]";
+	    };
+	
+	    return WaitAnimationEnd;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ToggleQuick = (function(superClass) {
+	    extend(ToggleQuick, superClass);
+	
+	    function ToggleQuick() {}
+	
+	    ToggleQuick.prototype.toSakuraScript = function() {
+	      return "\\_q";
+	    };
+	
+	    return ToggleQuick;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ToggleSynchronize = (function(superClass) {
+	    extend(ToggleSynchronize, superClass);
+	
+	    function ToggleSynchronize(scopes) {
+	      this.scopes = scopes != null ? scopes : [];
+	    }
+	
+	    ToggleSynchronize.prototype.toSakuraScript = function() {
+	      return "\\_s" + (this.scopes.length ? "[" + (joinargs(this.scopes)) + "]" : "");
+	    };
+	
+	    return ToggleSynchronize;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.TimeCritical = (function(superClass) {
+	    extend(TimeCritical, superClass);
+	
+	    function TimeCritical() {}
+	
+	    TimeCritical.prototype.toSakuraScript = function() {
+	      return "\\t";
+	    };
+	
+	    return TimeCritical;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.WaitClick = (function(superClass) {
+	    extend(WaitClick, superClass);
+	
+	    function WaitClick(noclear) {
+	      this.noclear = noclear != null ? noclear : false;
+	    }
+	
+	    WaitClick.prototype.toSakuraScript = function() {
+	      return "\\x";
+	    };
+	
+	    return WaitClick;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.NoChoiceTimeout = (function(superClass) {
+	    extend(NoChoiceTimeout, superClass);
+	
+	    function NoChoiceTimeout() {}
+	
+	    NoChoiceTimeout.prototype.toSakuraScript = function() {
+	      return "\\*";
+	    };
+	
+	    return NoChoiceTimeout;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.EventChoice = (function(superClass) {
+	    extend(EventChoice, superClass);
+	
+	    function EventChoice(text, event, references) {
+	      this.text = text;
+	      this.event = event;
+	      this.references = references;
+	    }
+	
+	    EventChoice.prototype.toSakuraScript = function() {
+	      return "\\q[" + (joinargs([this.text, this.event].concat(this.references))) + "]";
+	    };
+	
+	    return EventChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ReferencesChoice = (function(superClass) {
+	    extend(ReferencesChoice, superClass);
+	
+	    function ReferencesChoice(text, references) {
+	      this.text = text;
+	      this.references = references;
+	    }
+	
+	    ReferencesChoice.prototype.toSakuraScript = function() {
+	      return "\\q[" + (joinargs([this.text].concat(this.references))) + "]";
+	    };
+	
+	    return ReferencesChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ScriptChoice = (function(superClass) {
+	    extend(ScriptChoice, superClass);
+	
+	    function ScriptChoice(text, script1) {
+	      this.text = text;
+	      this.script = script1;
+	    }
+	
+	    ScriptChoice.prototype.toSakuraScript = function() {
+	      return "\\q[" + (joinargs([this.text, "script:" + this.script])) + "]";
+	    };
+	
+	    return ScriptChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.OldReferenceChoice = (function(superClass) {
+	    extend(OldReferenceChoice, superClass);
+	
+	    function OldReferenceChoice(text, reference, view) {
+	      this.text = text;
+	      this.reference = reference;
+	      this.view = view;
+	    }
+	
+	    OldReferenceChoice.prototype.toSakuraScript = function() {
+	      return "\\q" + (this.view || '') + "[" + (joinargs([this.reference])) + "][" + (joinargs([this.text])) + "]";
+	    };
+	
+	    return OldReferenceChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginEventChoice = (function(superClass) {
+	    extend(BeginEventChoice, superClass);
+	
+	    function BeginEventChoice(event, references) {
+	      this.event = event;
+	      this.references = references;
+	    }
+	
+	    BeginEventChoice.prototype.toSakuraScript = function() {
+	      return "\\__q[" + (joinargs([this.event].concat(this.references))) + "]";
+	    };
+	
+	    return BeginEventChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginReferencesChoice = (function(superClass) {
+	    extend(BeginReferencesChoice, superClass);
+	
+	    function BeginReferencesChoice(references) {
+	      this.references = references;
+	    }
+	
+	    BeginReferencesChoice.prototype.toSakuraScript = function() {
+	      return "\\__q[" + (joinargs(this.references)) + "]";
+	    };
+	
+	    return BeginReferencesChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginScriptChoice = (function(superClass) {
+	    extend(BeginScriptChoice, superClass);
+	
+	    function BeginScriptChoice(script1) {
+	      this.script = script1;
+	    }
+	
+	    BeginScriptChoice.prototype.toSakuraScript = function() {
+	      return "\\__q[" + (joinargs(["script:" + this.script])) + "]";
+	    };
+	
+	    return BeginScriptChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.EndChoice = (function(superClass) {
+	    extend(EndChoice, superClass);
+	
+	    function EndChoice() {}
+	
+	    EndChoice.prototype.toSakuraScript = function() {
+	      return "\\__q";
+	    };
+	
+	    return EndChoice;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginEventAnchor = (function(superClass) {
+	    extend(BeginEventAnchor, superClass);
+	
+	    function BeginEventAnchor(event, references) {
+	      this.event = event;
+	      this.references = references;
+	    }
+	
+	    BeginEventAnchor.prototype.toSakuraScript = function() {
+	      return "\\_a[" + (joinargs([this.event].concat(this.references))) + "]";
+	    };
+	
+	    return BeginEventAnchor;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginReferencesAnchor = (function(superClass) {
+	    extend(BeginReferencesAnchor, superClass);
+	
+	    function BeginReferencesAnchor(references) {
+	      this.references = references;
+	    }
+	
+	    BeginReferencesAnchor.prototype.toSakuraScript = function() {
+	      return "\\_a[" + (joinargs(this.references)) + "]";
+	    };
+	
+	    return BeginReferencesAnchor;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeginScriptAnchor = (function(superClass) {
+	    extend(BeginScriptAnchor, superClass);
+	
+	    function BeginScriptAnchor(script1) {
+	      this.script = script1;
+	    }
+	
+	    BeginScriptAnchor.prototype.toSakuraScript = function() {
+	      return "\\_a[" + (joinargs(["script:" + this.script])) + "]";
+	    };
+	
+	    return BeginScriptAnchor;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.EndAnchor = (function(superClass) {
+	    extend(EndAnchor, superClass);
+	
+	    function EndAnchor() {}
+	
+	    EndAnchor.prototype.toSakuraScript = function() {
+	      return "\\_a";
+	    };
+	
+	    return EndAnchor;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.LineBreak = (function(superClass) {
+	    extend(LineBreak, superClass);
+	
+	    function LineBreak() {}
+	
+	    LineBreak.prototype.toSakuraScript = function() {
+	      return "\\n";
+	    };
+	
+	    return LineBreak;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.HalfLineBreak = (function(superClass) {
+	    extend(HalfLineBreak, superClass);
+	
+	    function HalfLineBreak() {}
+	
+	    HalfLineBreak.prototype.toSakuraScript = function() {
+	      return "\\n[half]";
+	    };
+	
+	    return HalfLineBreak;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.PercentLineBreak = (function(superClass) {
+	    extend(PercentLineBreak, superClass);
+	
+	    function PercentLineBreak(percent) {
+	      this.percent = percent;
+	    }
+	
+	    PercentLineBreak.prototype.toSakuraScript = function() {
+	      return "\\n[" + this.percent + "]";
+	    };
+	
+	    return PercentLineBreak;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.ToggleNoAutoLineBreak = (function(superClass) {
+	    extend(ToggleNoAutoLineBreak, superClass);
+	
+	    function ToggleNoAutoLineBreak() {}
+	
+	    ToggleNoAutoLineBreak.prototype.toSakuraScript = function() {
+	      return "\\_n";
+	    };
+	
+	    return ToggleNoAutoLineBreak;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Location = (function(superClass) {
+	    extend(Location, superClass);
+	
+	    function Location(x1, y1) {
+	      this.x = x1;
+	      this.y = y1;
+	    }
+	
+	    Location.prototype.toSakuraScript = function() {
+	      return "\\_l[" + ([this.x, this.y].join(',')) + "]";
+	    };
+	
+	    return Location;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Image = (function(superClass) {
+	    extend(Image, superClass);
+	
+	    function Image(path, x1, y1, args1) {
+	      this.path = path;
+	      this.x = x1;
+	      this.y = y1;
+	      this.args = args1;
+	    }
+	
+	    Image.prototype.toSakuraScript = function() {
+	      return "\\_b[" + ([this.path, this.x, this.y].concat(this.args).join(',')) + "]";
+	    };
+	
+	    return Image;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.InlineImage = (function(superClass) {
+	    extend(InlineImage, superClass);
+	
+	    function InlineImage(path, x1, y1, args1) {
+	      this.path = path;
+	      this.x = x1;
+	      this.y = y1;
+	      this.args = args1;
+	    }
+	
+	    InlineImage.prototype.toSakuraScript = function() {
+	      return "\\_b[" + ([this.path, 'inline'].concat(this.args).join(',')) + "]";
+	    };
+	
+	    return InlineImage;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Font = (function(superClass) {
+	    extend(Font, superClass);
+	
+	    function Font(name, args1) {
+	      this.name = name;
+	      this.args = args1;
+	    }
+	
+	    Font.prototype.toSakuraScript = function() {
+	      return "\\f[" + (joinargs([this.name].concat(this.args))) + "]";
+	    };
+	
+	    return Font;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeFar = (function(superClass) {
+	    extend(BeFar, superClass);
+	
+	    function BeFar() {}
+	
+	    BeFar.prototype.toSakuraScript = function() {
+	      return "\\4";
+	    };
+	
+	    return BeFar;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.BeNear = (function(superClass) {
+	    extend(BeNear, superClass);
+	
+	    function BeNear() {}
+	
+	    BeNear.prototype.toSakuraScript = function() {
+	      return "\\5";
+	    };
+	
+	    return BeNear;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Clear = (function(superClass) {
+	    extend(Clear, superClass);
+	
+	    function Clear() {}
+	
+	    Clear.prototype.toSakuraScript = function() {
+	      return "\\c";
+	    };
+	
+	    return Clear;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.End = (function(superClass) {
+	    extend(End, superClass);
+	
+	    function End() {}
+	
+	    End.prototype.toSakuraScript = function() {
+	      return "\\e";
+	    };
+	
+	    return End;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.OldChoiceEnd = (function(superClass) {
+	    extend(OldChoiceEnd, superClass);
+	
+	    function OldChoiceEnd() {}
+	
+	    OldChoiceEnd.prototype.toSakuraScript = function() {
+	      return "\\z";
+	    };
+	
+	    return OldChoiceEnd;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.OpenCommunicateBox = (function(superClass) {
+	    extend(OpenCommunicateBox, superClass);
+	
+	    function OpenCommunicateBox() {}
+	
+	    OpenCommunicateBox.prototype.toSakuraScript = function() {
+	      return "\\__c";
+	    };
+	
+	    return OpenCommunicateBox;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.OpenTeachBox = (function(superClass) {
+	    extend(OpenTeachBox, superClass);
+	
+	    function OpenTeachBox() {}
+	
+	    OpenTeachBox.prototype.toSakuraScript = function() {
+	      return "\\__t";
+	    };
+	
+	    return OpenTeachBox;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Halt = (function(superClass) {
+	    extend(Halt, superClass);
+	
+	    function Halt() {}
+	
+	    Halt.prototype.toSakuraScript = function() {
+	      return "\\-";
+	    };
+	
+	    return Halt;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Marker = (function(superClass) {
+	    extend(Marker, superClass);
+	
+	    function Marker() {}
+	
+	    Marker.prototype.toSakuraScript = function() {
+	      return "\\![*]";
+	    };
+	
+	    return Marker;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Char = (function(superClass) {
+	    extend(Char, superClass);
+	
+	    function Char(raw_char) {
+	      this.raw_char = raw_char;
+	      if (this.raw_char) {
+	        this.char = this.raw_char.replace(/</, '&lt;').replace(/>/, '&gt;').replace(/&/, '&amp;');
+	      }
+	    }
+	
+	    Char.prototype.toSakuraScript = function() {
+	      return this.raw_char;
+	    };
+	
+	    return Char;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.EscapeChar = (function(superClass) {
+	    extend(EscapeChar, superClass);
+	
+	    function EscapeChar() {
+	      this.char = "\\";
+	    }
+	
+	    EscapeChar.prototype.toSakuraScript = function() {
+	      return "\\\\";
+	    };
+	
+	    return EscapeChar;
+	
+	  })(SakuraScriptToken.Char);
+	
+	  SakuraScriptToken.UCSChar = (function(superClass) {
+	    extend(UCSChar, superClass);
+	
+	    function UCSChar(code_point) {
+	      this.code_point = code_point;
+	      this.char = "&#" + this.code_point + ";";
+	    }
+	
+	    UCSChar.prototype.toSakuraScript = function() {
+	      return "\\_u[0x" + (this.code_point.toString(16)) + "]";
+	    };
+	
+	    return UCSChar;
+	
+	  })(SakuraScriptToken.Char);
+	
+	  SakuraScriptToken.AsciiChar = (function(superClass) {
+	    extend(AsciiChar, superClass);
+	
+	    function AsciiChar(code_point) {
+	      this.code_point = code_point;
+	      this.char = "&#" + this.code_point + ";";
+	    }
+	
+	    AsciiChar.prototype.toSakuraScript = function() {
+	      return "\\_m[0x" + (this.code_point.toString(16)) + "]";
+	    };
+	
+	    return AsciiChar;
+	
+	  })(SakuraScriptToken.Char);
+	
+	  SakuraScriptToken.EntityChar = (function(superClass) {
+	    extend(EntityChar, superClass);
+	
+	    function EntityChar(entity) {
+	      this.entity = entity;
+	      this.char = "&" + this.entity + ";";
+	    }
+	
+	    EntityChar.prototype.toSakuraScript = function() {
+	      return "\\&[" + this.entity + "]";
+	    };
+	
+	    return EntityChar;
+	
+	  })(SakuraScriptToken.Char);
+	
+	  SakuraScriptToken.Animation = (function(superClass) {
+	    extend(Animation, superClass);
+	
+	    function Animation(command, id, args1) {
+	      this.command = command;
+	      this.id = id;
+	      this.args = args1;
+	    }
+	
+	    Animation.prototype.toSakuraScript = function() {
+	      return "\\![anim," + (joinargs([this.command, this.id].concat(this.args))) + "]";
+	    };
+	
+	    return Animation;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Bind = (function(superClass) {
+	    extend(Bind, superClass);
+	
+	    function Bind(category, parts, dress_up) {
+	      this.category = category;
+	      this.parts = parts;
+	      this.dress_up = dress_up;
+	    }
+	
+	    Bind.prototype.toSakuraScript = function() {
+	      return "\\![bind," + (joinargs([this.category, this.parts].concat(this.dress_up != null ? [Number(this.dress_up)] : []))) + "]";
+	    };
+	
+	    return Bind;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.LockRepaint = (function(superClass) {
+	    extend(LockRepaint, superClass);
+	
+	    function LockRepaint() {}
+	
+	    LockRepaint.prototype.toSakuraScript = function() {
+	      return "\\![lock,repaint]";
+	    };
+	
+	    return LockRepaint;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.UnlockRepaint = (function(superClass) {
+	    extend(UnlockRepaint, superClass);
+	
+	    function UnlockRepaint() {}
+	
+	    UnlockRepaint.prototype.toSakuraScript = function() {
+	      return "\\![unlock,repaint]";
+	    };
+	
+	    return UnlockRepaint;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Move = (function(superClass) {
+	    extend(Move, superClass);
+	
+	    function Move(x1, y1, duration, origin_type, source_origin, target_origin) {
+	      this.x = x1;
+	      this.y = y1;
+	      this.duration = duration;
+	      this.origin_type = origin_type;
+	      this.source_origin = source_origin;
+	      this.target_origin = target_origin;
+	    }
+	
+	    Move.prototype.toSakuraScript = function() {
+	      return "\\![move," + (joinargs([this.x, this.y, this.duration, this.origin_type, this.source_origin, this.target_origin])) + "]";
+	    };
+	
+	    return Move;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.MoveAsync = (function(superClass) {
+	    extend(MoveAsync, superClass);
+	
+	    function MoveAsync() {
+	      return MoveAsync.__super__.constructor.apply(this, arguments);
+	    }
+	
+	    MoveAsync.prototype.toSakuraScript = function() {
+	      return "\\![moveasync," + (joinargs([this.x, this.y, this.duration, this.origin_type, this.source_origin, this.target_origin])) + "]";
+	    };
+	
+	    return MoveAsync;
+	
+	  })(SakuraScriptToken.Move);
+	
+	  SakuraScriptToken.MoveAsyncCancel = (function(superClass) {
+	    extend(MoveAsyncCancel, superClass);
+	
+	    function MoveAsyncCancel() {}
+	
+	    MoveAsyncCancel.prototype.toSakuraScript = function() {
+	      return "\\![moveasync,cancel]";
+	    };
+	
+	    return MoveAsyncCancel;
+	
+	  })(SakuraScriptToken.Move);
+	
+	  SakuraScriptToken.Raise = (function(superClass) {
+	    extend(Raise, superClass);
+	
+	    function Raise(event, references) {
+	      this.event = event;
+	      this.references = references;
+	    }
+	
+	    Raise.prototype.toSakuraScript = function() {
+	      return "\\![raise," + (joinargs([this.event].concat(this.references))) + "]";
+	    };
+	
+	    return Raise;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.TimerRaise = (function(superClass) {
+	    extend(TimerRaise, superClass);
+	
+	    function TimerRaise(period, repeat_count, event, references) {
+	      this.period = period;
+	      this.repeat_count = repeat_count != null ? repeat_count : 0;
+	      this.event = event != null ? event : "";
+	      this.references = references;
+	    }
+	
+	    TimerRaise.prototype.toSakuraScript = function() {
+	      return "\\![timerraise," + (joinargs([this.period, this.repeat_count, this.event].concat(this.references))) + "]";
+	    };
+	
+	    return TimerRaise;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Notify = (function(superClass) {
+	    extend(Notify, superClass);
+	
+	    function Notify(event, references) {
+	      this.event = event;
+	      this.references = references;
+	    }
+	
+	    Notify.prototype.toSakuraScript = function() {
+	      return "\\![notify," + (joinargs([this.event].concat(this.references))) + "]";
+	    };
+	
+	    return Notify;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Set = (function(superClass) {
+	    extend(Set, superClass);
+	
+	    function Set(id, args1) {
+	      this.id = id;
+	      this.args = args1;
+	    }
+	
+	    Set.prototype.toSakuraScript = function() {
+	      return "\\![set," + (joinargs([this.id].concat(this.args))) + "]";
+	    };
+	
+	    return Set;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Open = (function(superClass) {
+	    extend(Open, superClass);
+	
+	    function Open(command, args1) {
+	      this.command = command;
+	      this.args = args1;
+	    }
+	
+	    Open.prototype.toSakuraScript = function() {
+	      return "\\![open," + (joinargs([this.command].concat(this.args))) + "]";
+	    };
+	
+	    return Open;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.Close = (function(superClass) {
+	    extend(Close, superClass);
+	
+	    function Close(command, args1) {
+	      this.command = command;
+	      this.args = args1;
+	    }
+	
+	    Close.prototype.toSakuraScript = function() {
+	      return "\\![close," + (joinargs([this.command].concat(this.args))) + "]";
+	    };
+	
+	    return Close;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScriptToken.NotImplemented = (function(superClass) {
+	    extend(NotImplemented, superClass);
+	
+	    function NotImplemented(str1) {
+	      this.str = str1;
+	    }
+	
+	    NotImplemented.prototype.toSakuraScript = function() {
+	      return this.str;
+	    };
+	
+	    return NotImplemented;
+	
+	  })(SakuraScriptToken);
+	
+	  SakuraScript.tags = [
+	    {
+	      re: /^\\([h0])/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Scope(0, group[1]);
+	      }
+	    }, {
+	      re: /^\\([u1])/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Scope(1, group[1]);
+	      }
+	    }, {
+	      re: /^\\p\[(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Scope(Number(group[1]), "bracket");
+	      }
+	    }, {
+	      re: /^\\p(\d)/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Scope(Number(group[1]), "nobracket");
+	      }
+	    }, {
+	      re: /^\\s(\d)/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Surface(Number(group[1]), "nobracket");
+	      }
+	    }, {
+	      re: /^\\s\[([^\]]+)\]/,
+	      match: function(group) {
+	        if (isNaN(group[1])) {
+	          return new SakuraScriptToken.SurfaceAlias(group[1]);
+	        } else {
+	          return new SakuraScriptToken.Surface(Number(group[1]), "bracket");
+	        }
+	      }
+	    }, {
+	      re: /^\\b(\d)/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Balloon(Number(group[1]), "nobracket");
+	      }
+	    }, {
+	      re: /^\\b\[([^\]]+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Balloon(Number(group[1]), "bracket");
+	      }
+	    }, {
+	      re: /^\\i(\d)/,
+	      match: function(group) {
+	        return new SakuraScriptToken.PlayAnimation(Number(group[1]), "nobracket");
+	      }
+	    }, {
+	      re: /^\\i\[(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.PlayAnimation(Number(group[1]), "bracket");
+	      }
+	    }, {
+	      re: /^\\i\[(\d+),wait\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.PlayAnimationWait(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\w(\d)/,
+	      match: function(group) {
+	        return new SakuraScriptToken.SimpleWait(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\_w\[(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.PreciseWait(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\__w\[animation,(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.WaitAnimationEnd(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\__w\[clear\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.ResetBeginning();
+	      }
+	    }, {
+	      re: /^\\__w\[(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.WaitFromBeginning(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\_q/,
+	      match: function(group) {
+	        return new SakuraScriptToken.ToggleQuick();
+	      }
+	    }, {
+	      re: /^\\_s\[([^\]]+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.ToggleSynchronize(splitargs(group[1]).map(function(n) {
+	          return Number(n);
+	        }));
+	      }
+	    }, {
+	      re: /^\\_s/,
+	      match: function(group) {
+	        return new SakuraScriptToken.ToggleSynchronize();
+	      }
+	    }, {
+	      re: /^\\t/,
+	      match: function(group) {
+	        return new SakuraScriptToken.TimeCritical();
+	      }
+	    }, {
+	      re: /^\\x(\[noclear\])?/,
+	      match: function(group) {
+	        return new SakuraScriptToken.WaitClick(!!group[1]);
+	      }
+	    }, {
+	      re: /^\\\*/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NoChoiceTimeout();
+	      }
+	    }, {
+	      re: /^\\q\[((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        if (/^On/.test(args[1])) {
+	          return new SakuraScriptToken.EventChoice(args[0], args[1], args.slice(2));
+	        } else if (/^script:/.test(args[1])) {
+	          return new SakuraScriptToken.ScriptChoice(args[0], args[1].replace(/^script:/, ''));
+	        } else {
+	          return new SakuraScriptToken.ReferencesChoice(args[0], args.slice(1));
+	        }
+	      }
+	    }, {
+	      re: /^\\__q\[((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        if (/^On/.test(args[0])) {
+	          return new SakuraScriptToken.BeginEventChoice(args[0], args.slice(1));
+	        } else if (/^script:/.test(args[0])) {
+	          return new SakuraScriptToken.BeginScriptChoice(args[0].replace(/^script:/, ''));
+	        } else {
+	          return new SakuraScriptToken.BeginReferencesChoice(args);
+	        }
+	      }
+	    }, {
+	      re: /^\\__q/,
+	      match: function(group) {
+	        return new SakuraScriptToken.EndChoice();
+	      }
+	    }, {
+	      re: /^\\q(\d*)\[((?:\\\\|\\\]|[^\]])+)\]\[((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.OldReferenceChoice(group[3], group[2], group[1]);
+	      }
+	    }, {
+	      re: /^\\_a\[((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        if (/^On/.test(args[0])) {
+	          return new SakuraScriptToken.BeginEventAnchor(args[0], args.slice(1));
+	        } else if (/^script:/.test(args[0])) {
+	          return new SakuraScriptToken.BeginScriptAnchor(args[0].replace(/^script:/, ''));
+	        } else {
+	          return new SakuraScriptToken.BeginReferencesAnchor(args);
+	        }
+	      }
+	    }, {
+	      re: /^\\_a/,
+	      match: function(group) {
+	        return new SakuraScriptToken.EndAnchor();
+	      }
+	    }, {
+	      re: /^\\n\[half\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.HalfLineBreak();
+	      }
+	    }, {
+	      re: /^\\n\[(\d+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.PercentLineBreak(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\n/,
+	      match: function(group) {
+	        return new SakuraScriptToken.LineBreak();
+	      }
+	    }, {
+	      re: /^\\_n/,
+	      match: function(group) {
+	        return new SakuraScriptToken.ToggleNoAutoLineBreak();
+	      }
+	    }, {
+	      re: /^\\_l\[([^\]]+)\]/,
+	      match: function(group) {
+	        var ref, x, y;
+	        ref = splitargs(group[1]), x = ref[0], y = ref[1];
+	        return new SakuraScriptToken.Location(x, y);
+	      }
+	    }, {
+	      re: /^\\_b\[((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        if (args[1] === "inline") {
+	          return new SakuraScriptToken.InlineImage(args[0], args.slice(2));
+	        } else {
+	          return new SakuraScriptToken.Image(args[0], args[1], args[2], args.slice(3));
+	        }
+	      }
+	    }, {
+	      re: /^\\f\[([^\]]+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Font(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\4/,
+	      match: function(group) {
+	        return new SakuraScriptToken.BeFar();
+	      }
+	    }, {
+	      re: /^\\5/,
+	      match: function(group) {
+	        return new SakuraScriptToken.BeNear();
+	      }
+	    }, {
+	      re: /^\\c/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Clear();
+	      }
+	    }, {
+	      re: /^\\e/,
+	      match: function(group) {
+	        return new SakuraScriptToken.End();
+	      }
+	    }, {
+	      re: /^\\z/,
+	      match: function(group) {
+	        return new SakuraScriptToken.OldChoiceEnd();
+	      }
+	    }, {
+	      re: /^\\-/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Halt();
+	      }
+	    }, {
+	      re: /^\\\\/,
+	      match: function(group) {
+	        return new SakuraScriptToken.EscapeChar();
+	      }
+	    }, {
+	      re: /^\\!\[anim,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Animation(args[0], args[1], args.slice(2));
+	      }
+	    }, {
+	      re: /^\\!\[bind,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Bind(args[0], args[1], args[2] != null ? Number(args[2]) === 1 : null);
+	      }
+	    }, {
+	      re: /^\\!\[moveasync,cancel\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.MoveAsyncCancel();
+	      }
+	    }, {
+	      re: /^\\!\[move(async)?,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args, use_class;
+	        use_class = group[1] ? SakuraScriptToken.MoveAsync : SakuraScriptToken.Move;
+	        args = splitargs(group[2]);
+	        return new use_class(args[0], args[1], args[2], args[3], args[4], args[5]);
+	      }
+	    }, {
+	      re: /^\\!\[lock,repaint\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.LockRepaint();
+	      }
+	    }, {
+	      re: /^\\!\[unlock,repaint\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.UnlockRepaint();
+	      }
+	    }, {
+	      re: /^\\!\[set,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Set(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\!\[open,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Open(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\!\[close,((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Close(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\__c/,
+	      match: function(group) {
+	        return new SakuraScriptToken.OpenCommunicateBox();
+	      }
+	    }, {
+	      re: /^\\__t/,
+	      match: function(group) {
+	        return new SakuraScriptToken.OpenTeachBox();
+	      }
+	    }, {
+	      re: /^\\!\[\s*raise\s*,\s*((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Raise(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\!\[\s*timerraise\s*,\s*((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.TimerRaise(args[0], args[1], args[2], args.slice(3));
+	      }
+	    }, {
+	      re: /^\\!\[\s*notify\s*,\s*((?:\\\\|\\\]|[^\]])+)\]/,
+	      match: function(group) {
+	        var args;
+	        args = splitargs(group[1]);
+	        return new SakuraScriptToken.Notify(args[0], args.slice(1));
+	      }
+	    }, {
+	      re: /^\\!\[\*\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.Marker();
+	      }
+	    }, {
+	      re: /^\\_u\[([A-Fa-fXx0-9]+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.UCSChar(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\_m\[([A-Fa-fXx0-9]+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.AsciiChar(Number(group[1]));
+	      }
+	    }, {
+	      re: /^\\&\[([A-Za-z0-9]+)\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.EntityChar(group[1]);
+	      }
+	    }, {
+	      re: /^\\[C67+v8]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NotImplemented(group[0]);
+	      }
+	    }, {
+	      re: /^\\_[+V]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NotImplemented(group[0]);
+	      }
+	    }, {
+	      re: /^\\[8j]\[.*?\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NotImplemented(group[0]);
+	      }
+	    }, {
+	      re: /^\\_[!?v]\[.*?\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NotImplemented(group[0]);
+	      }
+	    }, {
+	      re: /^\\!\[.*?\]/,
+	      match: function(group) {
+	        return new SakuraScriptToken.NotImplemented(group[0]);
+	      }
+	    }, {
+	      re: /^./,
+	      match: function(group) {
+	        return new SakuraScriptToken.Char(group[0]);
+	      }
+	    }
+	  ];
+	
+	  if ((typeof module !== "undefined" && module !== null ? module.exports : void 0) != null) {
+	    module.exports = {
+	      SakuraScript: SakuraScript,
+	      SakuraScriptToken: SakuraScriptToken
+	    };
+	  } else {
+	    this.SakuraScript = SakuraScript;
+	    this.SakuraScriptToken = SakuraScriptToken;
+	  }
+	
+	}).call(this);
+	
+	//# sourceMappingURL=sakurascript.js.map
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(129)(module)))
+
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -8052,7 +9582,7 @@ var ghostKernelDefaultPlugins =
 	_ghostKernel.GhostKernelRoutings.push(NotifyInformationRouting);
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

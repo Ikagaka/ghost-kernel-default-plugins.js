@@ -1,5 +1,6 @@
 import {GhostKernelRoutings, GhostKernelControllers, GhostKernelController} from 'ghost-kernel';
 import {SakuraScriptExecuter} from 'sakurascript-executer';
+import {SakuraScriptToken} from 'sakurascript';
 
 export class SakuraScriptState {
   constructor() {
