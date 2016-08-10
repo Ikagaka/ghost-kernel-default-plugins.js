@@ -235,7 +235,7 @@ export class SakuraScriptController extends GhostKernelController {
     const surface = scope.surface();
     const blimp = scope.blimp();
     const shiorif = this.kernel.components.Shiorif;
-    const sakuraScriptState = this.components.SakuraScriptState;
+    const sakuraScriptState = this.kernel.components.SakuraScriptState;
     if (token instanceof SakuraScriptToken.BeFar) {
       // TODO cuttlebone not implemented
     } else if (token instanceof SakuraScriptToken.BeNear) {

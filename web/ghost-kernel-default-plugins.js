@@ -4669,7 +4669,7 @@ var ghostKernelDefaultPlugins =
 	      var surface = scope.surface();
 	      var blimp = scope.blimp();
 	      var shiorif = this.kernel.components.Shiorif;
-	      var sakuraScriptState = this.components.SakuraScriptState;
+	      var sakuraScriptState = this.kernel.components.SakuraScriptState;
 	      if (token instanceof _sakurascript.SakuraScriptToken.BeFar) {
 	        // TODO cuttlebone not implemented
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.BeNear) {
