@@ -7742,7 +7742,7 @@ var ghostKernelDefaultPlugins =
 	    value: function otherghostname() {
 	      // TODO ここでこの実装してよいのか
 	      var namedKernelManager = this.kernel.components.NamedKernelManager;
-	      var names = namedKernelManager.namedIds.map(function (namedId) {
+	      var names = namedKernelManager.namedIds().map(function (namedId) {
 	        return namedKernelManager.kernel(namedId);
 	      }).filter(function (kernel) {
 	        return kernel.ghostDescript;
