@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "babel-runtime": "^6.9.2",
-    "ghost-kernel": "^2.0.1",
     "sakurascript-executer": "^1.3.0"
   },
   "devDependencies": {
