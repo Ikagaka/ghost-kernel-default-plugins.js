@@ -14,7 +14,7 @@
 [![codecov.io](https://codecov.io/github/Ikagaka/ghost-kernel-default-plugins.js/coverage.svg?branch=master)](https://codecov.io/github/Ikagaka/ghost-kernel-default-plugins.js?branch=master)
 [![Code Climate](https://codeclimate.com/github/Ikagaka/ghost-kernel-default-plugins.js/badges/gpa.svg)](https://codeclimate.com/github/Ikagaka/ghost-kernel-default-plugins.js)
 
-ikagaka ghost kernel
+ikagaka ghost kernel default plugins
 
 ## Install
 
@@ -32,19 +32,19 @@ bower install ghost-kernel-default-plugins
 
 node.js(ES2015):
 ```javascript
-import {Ghostkernel} from 'ghost-kernel-default-plugins';
+import {GhostKernel} from 'ghost-kernel-default-plugins';
 ```
 
 node.js(ES5):
 ```javascript
 var ghostKernel = require('ghost-kernel-default-plugins');
-var Ghostkernel = ghostKernel.Ghostkernel;
+var GhostKernel = ghostKernel.GhostKernel;
 ```
 
 browser:
 ```html
 <script src="ghost-kernel-default-plugins.js"></script>
-var Ghostkernel = ghostKernel.Ghostkernel;
+var GhostKernel = ghostKernel.GhostKernel;
 ```
 
 ## API
