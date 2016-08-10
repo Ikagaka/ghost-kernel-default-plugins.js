@@ -39,6 +39,10 @@ export class VersionController extends GhostKernelController {
     const shiorif = kernel.components.Shiorif;
     // shiorif.allow_async_request = false; // 将来的に非同期リクエストをサポートする場合
     shiorif.auto_convert_request_version = '2.6';
+    shiorif.default_headers = {
+      Charset: 'UTF-8',
+      Sender: 'ikagaka',
+    };
     shiorif.get3('version')
       .then(
         ({response}) => {
