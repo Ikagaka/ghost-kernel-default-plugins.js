@@ -65,9 +65,7 @@ export class Menu {
       menu[`callShell-${dirpath}`] = {
         name,
         disabled,
-        callback() {
-          this.kernel.changeShell(dirpath);
-        },
+        callback: () => this.kernel.changeShell(dirpath),
       };
     });
     return menu;
@@ -83,9 +81,7 @@ export class Menu {
       menu[`changeBalloon-${dirpath}`] = {
         name,
         disabled,
-        callback() {
-          this.kernel.changeBalloon(dirpath);
-        },
+        callback: () => this.kernel.changeBalloon(dirpath),
       };
     });
     return menu;

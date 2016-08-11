@@ -115,6 +115,8 @@ var Menu = exports.Menu = function () {
   }, {
     key: 'changeShell',
     value: function changeShell() {
+      var _this3 = this;
+
       var namedKernelManager = this.kernel.components.NamedKernelManager;
       var shells = namedKernelManager.components.ShellList.list[this.kernel.namedId];
       var menu = {};
@@ -131,7 +133,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            this.kernel.changeShell(dirpath);
+            return _this3.kernel.changeShell(dirpath);
           }
         };
       });
@@ -140,6 +142,8 @@ var Menu = exports.Menu = function () {
   }, {
     key: 'changeBalloon',
     value: function changeBalloon() {
+      var _this4 = this;
+
       var namedKernelManager = this.kernel.components.NamedKernelManager;
       var balloons = namedKernelManager.components.BalloonList.list;
       var menu = {};
@@ -155,7 +159,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            this.kernel.changeBalloon(dirpath);
+            return _this4.kernel.changeBalloon(dirpath);
           }
         };
       });
