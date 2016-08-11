@@ -74,9 +74,9 @@ export class OperationController extends GhostKernelController {
     this.kernel.unregisterComponent('TimerEventSource');
     this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);
     this.kernel.unregisterComponent('Named');
-    await this.kernel.Shiorif.unload();
+    await this.kernel.components.Shiorif.unload();
     this.kernel.unregisterComponent('Shiorif');
-    this.kernel.components.NamedKernelManager.unregisterKernel(this.namedId);
+    this.kernel.components.NamedKernelManager.unregisterKernel(this.kernel.namedId);
     this.kernel.unregisterComponent('NamedKernelManager');
     this.kernel.unregisterComponent('GhostKernel');
   }

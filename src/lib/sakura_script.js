@@ -49,7 +49,7 @@ export class SakuraScriptController extends GhostKernelController {
   }
 
   halt() {
-    this.kernel.components.SakuraScriptExecuter.abort();
+    this.kernel.components.SakuraScriptExecuter.abort_execute();
     this.kernel.components.SakuraScriptState.clearAllTimerRaise();
     this.kernel.unregisterComponent('SakuraScriptExecuter');
     this.kernel.unregisterComponent('SakuraScriptState');

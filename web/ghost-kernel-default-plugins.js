@@ -4518,7 +4518,7 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: 'halt',
 	    value: function halt() {
-	      this.kernel.components.SakuraScriptExecuter.abort();
+	      this.kernel.components.SakuraScriptExecuter.abort_execute();
 	      this.kernel.components.SakuraScriptState.clearAllTimerRaise();
 	      this.kernel.unregisterComponent('SakuraScriptExecuter');
 	      this.kernel.unregisterComponent('SakuraScriptState');
@@ -9903,11 +9903,11 @@ var ghostKernelDefaultPlugins =
 	                this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);
 	                this.kernel.unregisterComponent('Named');
 	                _context3.next = 8;
-	                return this.kernel.Shiorif.unload();
+	                return this.kernel.components.Shiorif.unload();
 	
 	              case 8:
 	                this.kernel.unregisterComponent('Shiorif');
-	                this.kernel.components.NamedKernelManager.unregisterKernel(this.namedId);
+	                this.kernel.components.NamedKernelManager.unregisterKernel(this.kernel.namedId);
 	                this.kernel.unregisterComponent('NamedKernelManager');
 	                this.kernel.unregisterComponent('GhostKernel');
 	
