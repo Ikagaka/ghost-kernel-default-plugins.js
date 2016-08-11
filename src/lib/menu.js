@@ -29,9 +29,7 @@ export class Menu {
       menu[`changeGhost-${dirpath}`] = {
         name,
         disabled,
-        callback() {
-          // TODO
-        },
+        callback: () => namedKernelManager.changeNamed(dirpath, this.kernel.namedId),
       };
     });
     return menu;
@@ -46,9 +44,7 @@ export class Menu {
       menu[`callGhost-${dirpath}`] = {
         name,
         disabled,
-        callback() {
-          // TODO
-        },
+        callback: () => namedKernelManager.bootNamed(dirpath),
       };
     });
     return menu;

@@ -83,7 +83,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            // TODO
+            return namedKernelManager.changeNamed(dirpath, _this2.kernel.namedId);
           }
         };
       });
@@ -106,7 +106,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            // TODO
+            return namedKernelManager.bootNamed(dirpath);
           }
         };
       });

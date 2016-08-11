@@ -10167,7 +10167,7 @@ var ghostKernelDefaultPlugins =
 	          name: name,
 	          disabled: disabled,
 	          callback: function callback() {
-	            // TODO
+	            return namedKernelManager.changeNamed(dirpath, _this2.kernel.namedId);
 	          }
 	        };
 	      });
@@ -10190,7 +10190,7 @@ var ghostKernelDefaultPlugins =
 	          name: name,
 	          disabled: disabled,
 	          callback: function callback() {
-	            // TODO
+	            return namedKernelManager.bootNamed(dirpath);
 	          }
 	        };
 	      });
