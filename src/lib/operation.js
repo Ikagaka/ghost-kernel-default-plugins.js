@@ -64,12 +64,12 @@ export class OperationController extends GhostKernelController {
     } else {
       await shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
     }
+    if (this.halting) return;
     this.kernel.halt(reason); // スクリプトが\-を返さなかったとき対策
   }
 
   async halt(reason) {
-    if (this.halting) return; // TODO
-    this.halting = true;
+    this.halting = true; // TODO
 
     this.kernel.unregisterComponent('TimerEventSource');
     this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);

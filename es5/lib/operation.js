@@ -212,9 +212,17 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
                 return shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
 
               case 16:
+                if (!this.halting) {
+                  _context2.next = 18;
+                  break;
+                }
+
+                return _context2.abrupt('return');
+
+              case 18:
                 this.kernel.halt(reason); // スクリプトが\-を返さなかったとき対策
 
-              case 17:
+              case 19:
               case 'end':
                 return _context2.stop();
             }
@@ -236,30 +244,21 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!this.halting) {
-                  _context3.next = 2;
-                  break;
-                }
-
-                return _context3.abrupt('return');
-
-              case 2:
-                // TODO
-                this.halting = true;
+                this.halting = true; // TODO
 
                 this.kernel.unregisterComponent('TimerEventSource');
                 this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);
                 this.kernel.unregisterComponent('Named');
-                _context3.next = 8;
+                _context3.next = 6;
                 return this.kernel.components.Shiorif.unload();
 
-              case 8:
+              case 6:
                 this.kernel.unregisterComponent('Shiorif');
                 this.kernel.components.NamedKernelManager.unregisterKernel(this.kernel.namedId);
                 this.kernel.unregisterComponent('NamedKernelManager');
                 this.kernel.unregisterComponent('GhostKernel');
 
-              case 12:
+              case 10:
               case 'end':
                 return _context3.stop();
             }
