@@ -5,3 +5,4 @@ import './shell';
 import './sakura_script';
 import './notify_information';
 import './operation';
+import './menu';

@@ -13,4 +13,6 @@ require('./sakura_script');
 require('./notify_information');
 
 require('./operation');
+
+require('./menu');
 //# sourceMappingURL=ghost-kernel-default-plugins.js.map

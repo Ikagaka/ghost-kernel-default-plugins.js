@@ -60,6 +60,8 @@ var ghostKernelDefaultPlugins =
 	__webpack_require__(131);
 	
 	__webpack_require__(132);
+	
+	__webpack_require__(133);
 
 /***/ },
 /* 1 */
@@ -9787,6 +9789,301 @@ var ghostKernelDefaultPlugins =
 	
 	_ghostKernel.GhostKernelControllers.OperationController = OperationController;
 	_ghostKernel.GhostKernelRoutings.push(OperationRouting);
+
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.MenuController = exports.MenuRouting = exports.Menu = undefined;
+	
+	var _getPrototypeOf = __webpack_require__(70);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(74);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(92);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _slicedToArray2 = __webpack_require__(134);
+	
+	var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
+	
+	var _classCallCheck2 = __webpack_require__(99);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(100);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _ghostKernel = __webpack_require__(104);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Menu = exports.Menu = function () {
+	  function Menu(kernel) {
+	    (0, _classCallCheck3.default)(this, Menu);
+	
+	    this.kernel = kernel;
+	  }
+	
+	  (0, _createClass3.default)(Menu, [{
+	    key: 'contextmenu',
+	    value: function contextmenu(event) {
+	      var _this = this;
+	
+	      var scopeId = event.scopeId;
+	      return {
+	        items: {
+	          changeGhost: { name: 'ゴースト切り替え', items: this.changeGhost() },
+	          callGhost: { name: '他のゴーストを呼ぶ', items: this.callGhost() },
+	          changeShell: { name: 'シェル', items: this.changeShell() },
+	          changeBalloon: { name: 'バルーン', items: this.changeBalloon() },
+	          inputScript: { name: '開発用 スクリプト入力', callback: function callback() {
+	              return _this.kernel.components.SakuraScriptExecuter.execute(window.prompt('send'));
+	            } },
+	          quit: { name: '終了', callback: function callback() {
+	              return _this.kernel.close('user');
+	            } },
+	          quitAll: { name: '全て終了', callback: function callback() {
+	              return _this.kernel.components.NamedKernelManager.closeall('user');
+	            } }
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'changeGhost',
+	    value: function changeGhost() {
+	      var _this2 = this;
+	
+	      var namedKernelManager = this.kernel.components.NamedKernelManager;
+	      var ghosts = namedKernelManager.components.GhostList.list;
+	      var menu = {};
+	      ghosts.forEach(function (_ref) {
+	        var _ref2 = (0, _slicedToArray3.default)(_ref, 2);
+	
+	        var name = _ref2[0];
+	        var dirpath = _ref2[1];
+	
+	        var disabled = namedKernelManager.isKernelExists(dirpath) || _this2.kernel.namedId === dirpath;
+	        menu['changeGhost-' + dirpath] = {
+	          name: name,
+	          disabled: disabled,
+	          callback: function callback() {
+	            // TODO
+	          }
+	        };
+	      });
+	      return menu;
+	    }
+	  }, {
+	    key: 'callGhost',
+	    value: function callGhost() {
+	      var _this3 = this;
+	
+	      var namedKernelManager = this.kernel.components.NamedKernelManager;
+	      var ghosts = namedKernelManager.components.GhostList.list;
+	      var menu = {};
+	      ghosts.forEach(function (_ref3) {
+	        var _ref4 = (0, _slicedToArray3.default)(_ref3, 2);
+	
+	        var name = _ref4[0];
+	        var dirpath = _ref4[1];
+	
+	        var disabled = namedKernelManager.isKernelExists(dirpath) || _this3.kernel.namedId === dirpath;
+	        menu['callGhost-' + dirpath] = {
+	          name: name,
+	          disabled: disabled,
+	          callback: function callback() {
+	            // TODO
+	          }
+	        };
+	      });
+	      return menu;
+	    }
+	  }, {
+	    key: 'changeShell',
+	    value: function changeShell() {
+	      var namedKernelManager = this.kernel.components.NamedKernelManager;
+	      var shells = namedKernelManager.components.ShellList.list[this.kernel.namedId];
+	      var menu = {};
+	      if (!shells) return menu;
+	      var currentShellName = this.kernel.components.Named.shell.descript.name;
+	      shells.forEach(function (_ref5) {
+	        var _ref6 = (0, _slicedToArray3.default)(_ref5, 2);
+	
+	        var name = _ref6[0];
+	        var dirpath = _ref6[1];
+	
+	        var disabled = currentShellName === name;
+	        menu['callShell-' + dirpath] = {
+	          name: name,
+	          disabled: disabled,
+	          callback: function callback() {
+	            // TODO
+	          }
+	        };
+	      });
+	      return menu;
+	    }
+	  }, {
+	    key: 'changeBalloon',
+	    value: function changeBalloon() {
+	      var namedKernelManager = this.kernel.components.NamedKernelManager;
+	      var balloons = namedKernelManager.components.BalloonList.list;
+	      var menu = {};
+	      var currentBalloonName = this.kernel.components.Named.balloon.descript.name;
+	      balloons.forEach(function (_ref7) {
+	        var _ref8 = (0, _slicedToArray3.default)(_ref7, 2);
+	
+	        var name = _ref8[0];
+	        var dirpath = _ref8[1];
+	
+	        var disabled = currentBalloonName === name;
+	        menu['changeBalloon-' + dirpath] = {
+	          name: name,
+	          disabled: disabled,
+	          callback: function callback() {
+	            // TODO
+	          }
+	        };
+	      });
+	      return menu;
+	    }
+	  }]);
+	  return Menu;
+	}();
+	
+	var MenuRouting = exports.MenuRouting = function () {
+	  function MenuRouting() {
+	    (0, _classCallCheck3.default)(this, MenuRouting);
+	  }
+	
+	  (0, _createClass3.default)(MenuRouting, [{
+	    key: 'setup',
+	    value: function setup(routes) {
+	      routes.controller('MenuController', function (routes) {
+	        routes.event('GhostKernel', 'start');
+	        // TODO: 仕様上shellの右クリックを捕捉するべきだが現状のcuttlebone実装上マネージャのstartでハンドラを登録する
+	      });
+	    }
+	  }]);
+	  return MenuRouting;
+	}();
+	
+	var MenuController = exports.MenuController = function (_GhostKernelControlle) {
+	  (0, _inherits3.default)(MenuController, _GhostKernelControlle);
+	
+	  function MenuController(kernel) {
+	    (0, _classCallCheck3.default)(this, MenuController);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(MenuController).call(this, kernel));
+	  }
+	
+	  (0, _createClass3.default)(MenuController, [{
+	    key: 'start',
+	    value: function start() {
+	      var menu = new Menu(this.kernel);
+	      this.kernel.components.Named.contextmenu(menu.contextmenu.bind(menu));
+	    }
+	  }]);
+	  return MenuController;
+	}(_ghostKernel.GhostKernelController);
+	
+	_ghostKernel.GhostKernelControllers.MenuController = MenuController;
+	_ghostKernel.GhostKernelRoutings.push(MenuRouting);
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	exports.__esModule = true;
+	
+	var _isIterable2 = __webpack_require__(135);
+	
+	var _isIterable3 = _interopRequireDefault(_isIterable2);
+	
+	var _getIterator2 = __webpack_require__(109);
+	
+	var _getIterator3 = _interopRequireDefault(_getIterator2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function () {
+	  function sliceIterator(arr, i) {
+	    var _arr = [];
+	    var _n = true;
+	    var _d = false;
+	    var _e = undefined;
+	
+	    try {
+	      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+	        _arr.push(_s.value);
+	
+	        if (i && _arr.length === i) break;
+	      }
+	    } catch (err) {
+	      _d = true;
+	      _e = err;
+	    } finally {
+	      try {
+	        if (!_n && _i["return"]) _i["return"]();
+	      } finally {
+	        if (_d) throw _e;
+	      }
+	    }
+	
+	    return _arr;
+	  }
+	
+	  return function (arr, i) {
+	    if (Array.isArray(arr)) {
+	      return arr;
+	    } else if ((0, _isIterable3.default)(Object(arr))) {
+	      return sliceIterator(arr, i);
+	    } else {
+	      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	    }
+	  };
+	}();
+
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(136), __esModule: true };
+
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(49);
+	__webpack_require__(5);
+	module.exports = __webpack_require__(137);
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var classof   = __webpack_require__(54)
+	  , ITERATOR  = __webpack_require__(46)('iterator')
+	  , Iterators = __webpack_require__(28);
+	module.exports = __webpack_require__(13).isIterable = function(it){
+	  var O = Object(it);
+	  return O[ITERATOR] !== undefined
+	    || '@@iterator' in O
+	    || Iterators.hasOwnProperty(classof(O));
+	};
 
 /***/ }
 /******/ ]);
