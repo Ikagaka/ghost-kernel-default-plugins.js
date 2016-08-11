@@ -30,7 +30,7 @@ export class InformationController extends GhostKernelController {
       ].map((id) =>
         shiorif.get3(id).then(({response}) => {
           Information[id].length = 0; // clear
-          response.to('3.0').headers.get_separated2('Value').forEach((site) =>
+          (response.to('3.0').headers.get_separated2('Value') || []).forEach((site) =>
             Information[id].push(new SiteMenu(...site))
           );
         })

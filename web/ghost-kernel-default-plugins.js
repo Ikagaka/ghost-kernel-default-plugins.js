@@ -3692,7 +3692,7 @@ var ghostKernelDefaultPlugins =
 	          var response = _ref2.response;
 	
 	          Information[id].length = 0; // clear
-	          response.to('3.0').headers.get_separated2('Value').forEach(function (site) {
+	          (response.to('3.0').headers.get_separated2('Value') || []).forEach(function (site) {
 	            return Information[id].push(new (Function.prototype.bind.apply(SiteMenu, [null].concat((0, _toConsumableArray3.default)(site))))());
 	          });
 	        });
