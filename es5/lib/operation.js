@@ -88,56 +88,62 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
                 profile = _context.sent;
                 boot_count = profile.boot_count || 0;
 
-                if (!(boot_count === 0)) {
-                  _context.next = 21;
+                profile.boot_count++;
+
+                if (!(boot_count === 1)) {
+                  _context.next = 22;
                   break;
                 }
 
                 vanish_count = profile.vanish_count || 0;
-                _context.next = 9;
+                _context.next = 10;
                 return shiorif.get3('OnFirstBoot', [vanish_count]);
 
-              case 9:
+              case 10:
                 transaction = _context.sent;
 
                 this.kernel.emit('boot_done');
 
                 if (!(transaction.response.to('3.0').status_line.code === 200)) {
-                  _context.next = 16;
+                  _context.next = 17;
                   break;
                 }
 
-                _context.next = 14;
+                _context.next = 15;
                 return this.kernel.executeSakuraScript(transaction);
 
-              case 14:
-                _context.next = 18;
+              case 15:
+                _context.next = 19;
                 break;
 
-              case 16:
-                _context.next = 18;
+              case 17:
+                _context.next = 19;
                 return shiorif.get3('OnBoot', this._bootHeaders(profile.shellname)).then(this.kernel.executeSakuraScript);
 
-              case 18:
+              case 19:
                 this.kernel.emit('boot_complete');
-                _context.next = 28;
+                _context.next = 29;
                 break;
 
-              case 21:
-                _context.next = 23;
+              case 22:
+                _context.next = 24;
                 return shiorif.get3('OnBoot', this._bootHeaders(profile.shellname));
 
-              case 23:
+              case 24:
                 _transaction = _context.sent;
 
                 this.kernel.emit('boot_done');
-                _context.next = 27;
+                _context.next = 28;
                 return this.kernel.executeSakuraScript(_transaction);
 
-              case 27:
+              case 28:
                 this.kernel.emit('boot_complete');
 
-              case 28:
+              case 29:
+                _context.next = 31;
+                return this.kernel.profile(profile);
+
+              case 31:
               case 'end':
                 return _context.stop();
             }
@@ -162,11 +168,53 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
   }, {
     key: 'close',
     value: function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(reason, all) {
+        var shiorif, transaction;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                shiorif = this.kernel.components.Shiorif;
+
+                if (!all) {
+                  _context2.next = 14;
+                  break;
+                }
+
+                _context2.next = 4;
+                return shiorif.get3('OnCloseAll', [reason]);
+
+              case 4:
+                transaction = _context2.sent;
+
+                if (!(transaction.response.to('3.0').status_line.code === 200)) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _context2.next = 8;
+                return this.kernel.executeSakuraScript(transaction);
+
+              case 8:
+                _context2.next = 12;
+                break;
+
+              case 10:
+                _context2.next = 12;
+                return shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
+
+              case 12:
+                _context2.next = 16;
+                break;
+
+              case 14:
+                _context2.next = 16;
+                return shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
+
+              case 16:
+                this.kernel.halt(reason); // スクリプトが\-を返さなかったとき対策
+
+              case 17:
               case 'end':
                 return _context2.stop();
             }
@@ -174,7 +222,7 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
         }, _callee2, this);
       }));
 
-      function close() {
+      function close(_x, _x2) {
         return _ref2.apply(this, arguments);
       }
 
@@ -182,7 +230,49 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
     }()
   }, {
     key: 'halt',
-    value: function halt() {}
+    value: function () {
+      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(reason) {
+        return _regenerator2.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!this.halting) {
+                  _context3.next = 2;
+                  break;
+                }
+
+                return _context3.abrupt('return');
+
+              case 2:
+                // TODO
+                this.halting = true;
+
+                this.kernel.unregisterComponent('TimerEventSource');
+                this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);
+                this.kernel.unregisterComponent('Named');
+                _context3.next = 8;
+                return this.kernel.Shiorif.unload();
+
+              case 8:
+                this.kernel.unregisterComponent('Shiorif');
+                this.kernel.components.NamedKernelManager.unregisterKernel(this.namedId);
+                this.kernel.unregisterComponent('NamedKernelManager');
+                this.kernel.unregisterComponent('GhostKernel');
+
+              case 12:
+              case 'end':
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function halt(_x3) {
+        return _ref3.apply(this, arguments);
+      }
+
+      return halt;
+    }()
   }, {
     key: 'change_shell',
     value: function change_shell(shellname) {}

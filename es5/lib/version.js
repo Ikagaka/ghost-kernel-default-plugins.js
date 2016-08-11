@@ -43,6 +43,7 @@ var VersionRouting = exports.VersionRouting = function () {
     value: function setup(routes) {
       routes.controller('VersionController', function (routes) {
         routes.event('GhostKernel', 'start');
+        routes.event('GhostKernel', 'halt');
       });
     }
   }]);
@@ -172,6 +173,11 @@ var VersionController = exports.VersionController = function (_GhostKernelContro
           });
         }
       });
+    }
+  }, {
+    key: 'halt',
+    value: function halt() {
+      this.kernel.unregisterComponent('Version');
     }
   }]);
   return VersionController;

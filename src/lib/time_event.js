@@ -4,6 +4,7 @@ export class TimeEventRouting {
   setup(routes) {
     routes.controller('TimeEventController', (routes) => {
       routes.event('GhostKernel', 'boot_done', 'enable_time_events'); // TODO いつが最初なのが正しい?
+      routes.event('GhostKernel', 'halt');
       routes.from('TimerEventSource', (routes) => {
         routes.event('second_change');
         routes.event('minute_change');
@@ -29,6 +30,15 @@ export class TimeEventController extends GhostKernelController {
 
   enable_time_events() {
     this.kernel.components.TimerEventState.enabled = true;
+  }
+
+  disable_time_events() {
+    this.kernel.components.TimerEventState.enabled = false;
+  }
+
+  halt() {
+    this.disable_time_events();
+    this.kernel.unregisterComponent('TimerEventState');
   }
 
   second_change() {

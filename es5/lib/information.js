@@ -47,6 +47,7 @@ var InformationRouting = exports.InformationRouting = function () {
     value: function setup(routes) {
       routes.controller('InformationController', function (routes) {
         routes.event('GhostKernel', 'notify_informations_done', 'initialize_informations');
+        routes.event('GhostKernel', 'halt');
       });
     }
   }]);
@@ -86,6 +87,11 @@ var InformationController = exports.InformationController = function (_GhostKern
       }))).then(function () {
         return kernel.emit('initialize_informations_done');
       });
+    }
+  }, {
+    key: 'halt',
+    value: function halt() {
+      this.kernel.unregisterComponent('Information');
     }
   }]);
   return InformationController;

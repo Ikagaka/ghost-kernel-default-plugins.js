@@ -21,13 +21,17 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _keys = require('babel-runtime/core-js/object/keys');
 
-var _createClass3 = _interopRequireDefault(_createClass2);
+var _keys2 = _interopRequireDefault(_keys);
 
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _ghostKernel = require('ghost-kernel');
 
@@ -37,11 +41,32 @@ var _sakurascript = require('sakurascript');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SakuraScriptState = exports.SakuraScriptState = function SakuraScriptState() {
-  (0, _classCallCheck3.default)(this, SakuraScriptState);
+var SakuraScriptState = exports.SakuraScriptState = function () {
+  function SakuraScriptState() {
+    (0, _classCallCheck3.default)(this, SakuraScriptState);
 
-  this.timerRaiseTimerId = {};
-};
+    this.timerRaiseTimerId = {};
+  }
+
+  (0, _createClass3.default)(SakuraScriptState, [{
+    key: 'clearTimerRaise',
+    value: function clearTimerRaise(event) {
+      var id = this.timerRaiseTimerId[event];
+      if (id) clearInterval(id);
+      delete this.timerRaiseTimerId[event];
+    }
+  }, {
+    key: 'clearAllTimerRaise',
+    value: function clearAllTimerRaise() {
+      var _this = this;
+
+      (0, _keys2.default)(this.timerRaiseTimerId).forEach(function (event) {
+        return _this.clearTimerRaise(event);
+      });
+    }
+  }]);
+  return SakuraScriptState;
+}();
 
 var SakuraScriptRouting = exports.SakuraScriptRouting = function () {
   function SakuraScriptRouting() {
@@ -53,6 +78,7 @@ var SakuraScriptRouting = exports.SakuraScriptRouting = function () {
     value: function setup(routes) {
       routes.controller('SakuraScriptController', function (routes) {
         routes.event('GhostKernel', 'start');
+        routes.event('GhostKernel', 'halt');
         routes.from('SakuraScriptExecuter', function (routes) {
           routes.event('begin_execute');
           routes.event('execute');
@@ -75,7 +101,7 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
   (0, _createClass3.default)(SakuraScriptController, [{
     key: 'start',
     value: function start() {
-      var _this2 = this;
+      var _this3 = this;
 
       var sakurascript_executer = new _sakurascriptExecuter.SakuraScriptExecuter({ talk_wait: 50 }); // TODO 設定を読む
       this.kernel.registerComponent('SakuraScriptExecuter', sakurascript_executer);
@@ -83,8 +109,16 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       // make shortcut
       this.kernel.executeSakuraScript = function (transaction) {
         var value = transaction.response.to('3.0').headers.header.Value;
-        if (value != null) _this2.kernel.components.SakuraScriptExecuter.execute(value.toString());
+        if (value != null) _this3.kernel.components.SakuraScriptExecuter.execute(value.toString());
       };
+    }
+  }, {
+    key: 'halt',
+    value: function halt() {
+      this.kernel.components.SakuraScriptExecuter.abort();
+      this.kernel.components.SakuraScriptState.clearAllTimerRaise();
+      this.kernel.unregisterComponent('SakuraScriptExecuter');
+      this.kernel.unregisterComponent('SakuraScriptState');
     }
   }, {
     key: 'begin_execute',
@@ -295,7 +329,7 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
   }, {
     key: '_handle_other',
     value: function _handle_other(token) {
-      var _this3 = this;
+      var _this4 = this;
 
       var named = this.kernel.components.Named;
       var scope = named.scope();
@@ -339,20 +373,13 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
           (function () {
             var repeat_count = token.repeat_count || 0;
             sakuraScriptState.timerRaiseTimerId[token.event] = setInterval(function () {
-              shiorif.get3(token.event, token.references).then(_this3.kernel.executeSakuraScript);
+              shiorif.get3(token.event, token.references).then(_this4.kernel.executeSakuraScript);
               if (repeat_count > 0) repeat_count--;
-              if (!repeat_count) {
-                clearInterval(sakuraScriptState.timerRaiseTimerId[token.event]);
-                delete sakuraScriptState.timerRaiseTimerId[token.event];
-              }
+              if (!repeat_count) sakuraScriptState.clearTimerRaise(token.event);
             }, token.period);
           })();
         } else {
-          var id = sakuraScriptState.timerRaiseTimerId[token.event];
-          if (id) {
-            clearInterval(id);
-            delete sakuraScriptState.timerRaiseTimerId[token.event];
-          }
+          sakuraScriptState.clearTimerRaise(token.event);
         }
       } else if (token instanceof _sakurascript.SakuraScriptToken.Notify) {
         shiorif.notify3(token.event, token.references); // TODO: catch error

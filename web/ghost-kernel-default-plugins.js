@@ -112,6 +112,7 @@ var ghostKernelDefaultPlugins =
 	    value: function setup(routes) {
 	      routes.controller('VersionController', function (routes) {
 	        routes.event('GhostKernel', 'start');
+	        routes.event('GhostKernel', 'halt');
 	      });
 	    }
 	  }]);
@@ -241,6 +242,11 @@ var ghostKernelDefaultPlugins =
 	          });
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      this.kernel.unregisterComponent('Version');
 	    }
 	  }]);
 	  return VersionController;
@@ -3662,6 +3668,7 @@ var ghostKernelDefaultPlugins =
 	    value: function setup(routes) {
 	      routes.controller('InformationController', function (routes) {
 	        routes.event('GhostKernel', 'notify_informations_done', 'initialize_informations');
+	        routes.event('GhostKernel', 'halt');
 	      });
 	    }
 	  }]);
@@ -3701,6 +3708,11 @@ var ghostKernelDefaultPlugins =
 	      }))).then(function () {
 	        return kernel.emit('initialize_informations_done');
 	      });
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      this.kernel.unregisterComponent('Information');
 	    }
 	  }]);
 	  return InformationController;
@@ -3980,6 +3992,7 @@ var ghostKernelDefaultPlugins =
 	    value: function setup(routes) {
 	      routes.controller('TimeEventController', function (routes) {
 	        routes.event('GhostKernel', 'boot_done', 'enable_time_events'); // TODO いつが最初なのが正しい?
+	        routes.event('GhostKernel', 'halt');
 	        routes.from('TimerEventSource', function (routes) {
 	          routes.event('second_change');
 	          routes.event('minute_change');
@@ -4016,6 +4029,17 @@ var ghostKernelDefaultPlugins =
 	    key: 'enable_time_events',
 	    value: function enable_time_events() {
 	      this.kernel.components.TimerEventState.enabled = true;
+	    }
+	  }, {
+	    key: 'disable_time_events',
+	    value: function disable_time_events() {
+	      this.kernel.components.TimerEventState.enabled = false;
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      this.disable_time_events();
+	      this.kernel.unregisterComponent('TimerEventState');
 	    }
 	  }, {
 	    key: 'second_change',
@@ -4161,6 +4185,7 @@ var ghostKernelDefaultPlugins =
 	    value: function setup(routes) {
 	      routes.controller('ShellController', function (routes) {
 	        routes.event('GhostKernel', 'start');
+	        routes.event('GhostKernel', 'halt');
 	        routes.from('Named', function (routes) {
 	          routes.event('choiceselect');
 	          routes.event('anchorselect');
@@ -4194,6 +4219,12 @@ var ghostKernelDefaultPlugins =
 	    value: function start() {
 	      var shellState = new ShellState(this.kernel.components.Named);
 	      this.kernel.registerComponent('ShellState', shellState);
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      this.kernel.components.ShellState.clearBalloonTimeout();
+	      this.kernel.unregisterComponent('ShellState');
 	    }
 	  }, {
 	    key: 'choiceselect',
@@ -4393,13 +4424,17 @@ var ghostKernelDefaultPlugins =
 	
 	var _inherits3 = _interopRequireDefault(_inherits2);
 	
-	var _createClass2 = __webpack_require__(100);
+	var _keys = __webpack_require__(106);
 	
-	var _createClass3 = _interopRequireDefault(_createClass2);
+	var _keys2 = _interopRequireDefault(_keys);
 	
 	var _classCallCheck2 = __webpack_require__(99);
 	
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(100);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
 	
 	var _ghostKernel = __webpack_require__(104);
 	
@@ -4409,11 +4444,32 @@ var ghostKernelDefaultPlugins =
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var SakuraScriptState = exports.SakuraScriptState = function SakuraScriptState() {
-	  (0, _classCallCheck3.default)(this, SakuraScriptState);
+	var SakuraScriptState = exports.SakuraScriptState = function () {
+	  function SakuraScriptState() {
+	    (0, _classCallCheck3.default)(this, SakuraScriptState);
 	
-	  this.timerRaiseTimerId = {};
-	};
+	    this.timerRaiseTimerId = {};
+	  }
+	
+	  (0, _createClass3.default)(SakuraScriptState, [{
+	    key: 'clearTimerRaise',
+	    value: function clearTimerRaise(event) {
+	      var id = this.timerRaiseTimerId[event];
+	      if (id) clearInterval(id);
+	      delete this.timerRaiseTimerId[event];
+	    }
+	  }, {
+	    key: 'clearAllTimerRaise',
+	    value: function clearAllTimerRaise() {
+	      var _this = this;
+	
+	      (0, _keys2.default)(this.timerRaiseTimerId).forEach(function (event) {
+	        return _this.clearTimerRaise(event);
+	      });
+	    }
+	  }]);
+	  return SakuraScriptState;
+	}();
 	
 	var SakuraScriptRouting = exports.SakuraScriptRouting = function () {
 	  function SakuraScriptRouting() {
@@ -4425,6 +4481,7 @@ var ghostKernelDefaultPlugins =
 	    value: function setup(routes) {
 	      routes.controller('SakuraScriptController', function (routes) {
 	        routes.event('GhostKernel', 'start');
+	        routes.event('GhostKernel', 'halt');
 	        routes.from('SakuraScriptExecuter', function (routes) {
 	          routes.event('begin_execute');
 	          routes.event('execute');
@@ -4447,7 +4504,7 @@ var ghostKernelDefaultPlugins =
 	  (0, _createClass3.default)(SakuraScriptController, [{
 	    key: 'start',
 	    value: function start() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var sakurascript_executer = new _sakurascriptExecuter.SakuraScriptExecuter({ talk_wait: 50 }); // TODO 設定を読む
 	      this.kernel.registerComponent('SakuraScriptExecuter', sakurascript_executer);
@@ -4455,8 +4512,16 @@ var ghostKernelDefaultPlugins =
 	      // make shortcut
 	      this.kernel.executeSakuraScript = function (transaction) {
 	        var value = transaction.response.to('3.0').headers.header.Value;
-	        if (value != null) _this2.kernel.components.SakuraScriptExecuter.execute(value.toString());
+	        if (value != null) _this3.kernel.components.SakuraScriptExecuter.execute(value.toString());
 	      };
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      this.kernel.components.SakuraScriptExecuter.abort();
+	      this.kernel.components.SakuraScriptState.clearAllTimerRaise();
+	      this.kernel.unregisterComponent('SakuraScriptExecuter');
+	      this.kernel.unregisterComponent('SakuraScriptState');
 	    }
 	  }, {
 	    key: 'begin_execute',
@@ -4667,7 +4732,7 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: '_handle_other',
 	    value: function _handle_other(token) {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      var named = this.kernel.components.Named;
 	      var scope = named.scope();
@@ -4711,20 +4776,13 @@ var ghostKernelDefaultPlugins =
 	          (function () {
 	            var repeat_count = token.repeat_count || 0;
 	            sakuraScriptState.timerRaiseTimerId[token.event] = setInterval(function () {
-	              shiorif.get3(token.event, token.references).then(_this3.kernel.executeSakuraScript);
+	              shiorif.get3(token.event, token.references).then(_this4.kernel.executeSakuraScript);
 	              if (repeat_count > 0) repeat_count--;
-	              if (!repeat_count) {
-	                clearInterval(sakuraScriptState.timerRaiseTimerId[token.event]);
-	                delete sakuraScriptState.timerRaiseTimerId[token.event];
-	              }
+	              if (!repeat_count) sakuraScriptState.clearTimerRaise(token.event);
 	            }, token.period);
 	          })();
 	        } else {
-	          var id = sakuraScriptState.timerRaiseTimerId[token.event];
-	          if (id) {
-	            clearInterval(id);
-	            delete sakuraScriptState.timerRaiseTimerId[token.event];
-	          }
+	          sakuraScriptState.clearTimerRaise(token.event);
 	        }
 	      } else if (token instanceof _sakurascript.SakuraScriptToken.Notify) {
 	        shiorif.notify3(token.event, token.references); // TODO: catch error
@@ -9682,56 +9740,62 @@ var ghostKernelDefaultPlugins =
 	                profile = _context.sent;
 	                boot_count = profile.boot_count || 0;
 	
-	                if (!(boot_count === 0)) {
-	                  _context.next = 21;
+	                profile.boot_count++;
+	
+	                if (!(boot_count === 1)) {
+	                  _context.next = 22;
 	                  break;
 	                }
 	
 	                vanish_count = profile.vanish_count || 0;
-	                _context.next = 9;
+	                _context.next = 10;
 	                return shiorif.get3('OnFirstBoot', [vanish_count]);
 	
-	              case 9:
+	              case 10:
 	                transaction = _context.sent;
 	
 	                this.kernel.emit('boot_done');
 	
 	                if (!(transaction.response.to('3.0').status_line.code === 200)) {
-	                  _context.next = 16;
+	                  _context.next = 17;
 	                  break;
 	                }
 	
-	                _context.next = 14;
+	                _context.next = 15;
 	                return this.kernel.executeSakuraScript(transaction);
 	
-	              case 14:
-	                _context.next = 18;
+	              case 15:
+	                _context.next = 19;
 	                break;
 	
-	              case 16:
-	                _context.next = 18;
+	              case 17:
+	                _context.next = 19;
 	                return shiorif.get3('OnBoot', this._bootHeaders(profile.shellname)).then(this.kernel.executeSakuraScript);
 	
-	              case 18:
+	              case 19:
 	                this.kernel.emit('boot_complete');
-	                _context.next = 28;
+	                _context.next = 29;
 	                break;
 	
-	              case 21:
-	                _context.next = 23;
+	              case 22:
+	                _context.next = 24;
 	                return shiorif.get3('OnBoot', this._bootHeaders(profile.shellname));
 	
-	              case 23:
+	              case 24:
 	                _transaction = _context.sent;
 	
 	                this.kernel.emit('boot_done');
-	                _context.next = 27;
+	                _context.next = 28;
 	                return this.kernel.executeSakuraScript(_transaction);
 	
-	              case 27:
+	              case 28:
 	                this.kernel.emit('boot_complete');
 	
-	              case 28:
+	              case 29:
+	                _context.next = 31;
+	                return this.kernel.profile(profile);
+	
+	              case 31:
 	              case 'end':
 	                return _context.stop();
 	            }
@@ -9756,11 +9820,53 @@ var ghostKernelDefaultPlugins =
 	  }, {
 	    key: 'close',
 	    value: function () {
-	      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+	      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(reason, all) {
+	        var shiorif, transaction;
 	        return _regenerator2.default.wrap(function _callee2$(_context2) {
 	          while (1) {
 	            switch (_context2.prev = _context2.next) {
 	              case 0:
+	                shiorif = this.kernel.components.Shiorif;
+	
+	                if (!all) {
+	                  _context2.next = 14;
+	                  break;
+	                }
+	
+	                _context2.next = 4;
+	                return shiorif.get3('OnCloseAll', [reason]);
+	
+	              case 4:
+	                transaction = _context2.sent;
+	
+	                if (!(transaction.response.to('3.0').status_line.code === 200)) {
+	                  _context2.next = 10;
+	                  break;
+	                }
+	
+	                _context2.next = 8;
+	                return this.kernel.executeSakuraScript(transaction);
+	
+	              case 8:
+	                _context2.next = 12;
+	                break;
+	
+	              case 10:
+	                _context2.next = 12;
+	                return shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
+	
+	              case 12:
+	                _context2.next = 16;
+	                break;
+	
+	              case 14:
+	                _context2.next = 16;
+	                return shiorif.get3('OnClose', [reason]).then(this.kernel.executeSakuraScript);
+	
+	              case 16:
+	                this.kernel.halt(reason); // スクリプトが\-を返さなかったとき対策
+	
+	              case 17:
 	              case 'end':
 	                return _context2.stop();
 	            }
@@ -9768,7 +9874,7 @@ var ghostKernelDefaultPlugins =
 	        }, _callee2, this);
 	      }));
 	
-	      function close() {
+	      function close(_x, _x2) {
 	        return _ref2.apply(this, arguments);
 	      }
 	
@@ -9776,7 +9882,49 @@ var ghostKernelDefaultPlugins =
 	    }()
 	  }, {
 	    key: 'halt',
-	    value: function halt() {}
+	    value: function () {
+	      var _ref3 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(reason) {
+	        return _regenerator2.default.wrap(function _callee3$(_context3) {
+	          while (1) {
+	            switch (_context3.prev = _context3.next) {
+	              case 0:
+	                if (!this.halting) {
+	                  _context3.next = 2;
+	                  break;
+	                }
+	
+	                return _context3.abrupt('return');
+	
+	              case 2:
+	                // TODO
+	                this.halting = true;
+	
+	                this.kernel.unregisterComponent('TimerEventSource');
+	                this.kernel.components.NamedKernelManager.components.NamedManager.vanish(this.kernel.components.Named.namedId);
+	                this.kernel.unregisterComponent('Named');
+	                _context3.next = 8;
+	                return this.kernel.Shiorif.unload();
+	
+	              case 8:
+	                this.kernel.unregisterComponent('Shiorif');
+	                this.kernel.components.NamedKernelManager.unregisterKernel(this.namedId);
+	                this.kernel.unregisterComponent('NamedKernelManager');
+	                this.kernel.unregisterComponent('GhostKernel');
+	
+	              case 12:
+	              case 'end':
+	                return _context3.stop();
+	            }
+	          }
+	        }, _callee3, this);
+	      }));
+	
+	      function halt(_x3) {
+	        return _ref3.apply(this, arguments);
+	      }
+	
+	      return halt;
+	    }()
 	  }, {
 	    key: 'change_shell',
 	    value: function change_shell(shellname) {}
@@ -9855,7 +10003,7 @@ var ghostKernelDefaultPlugins =
 	              return _this.kernel.close('user');
 	            } },
 	          quitAll: { name: '全て終了', callback: function callback() {
-	              return _this.kernel.components.NamedKernelManager.closeall('user');
+	              return _this.kernel.components.NamedKernelManager.close('user');
 	            } }
 	        }
 	      };

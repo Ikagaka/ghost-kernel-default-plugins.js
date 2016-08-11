@@ -4,6 +4,7 @@ export class InformationRouting {
   setup(routes) {
     routes.controller('InformationController', (routes) => {
       routes.event('GhostKernel', 'notify_informations_done', 'initialize_informations');
+      routes.event('GhostKernel', 'halt');
     });
   }
 }
@@ -38,6 +39,10 @@ export class InformationController extends GhostKernelController {
     ).then(
       () => kernel.emit('initialize_informations_done')
     );
+  }
+
+  halt() {
+    this.kernel.unregisterComponent('Information');
   }
 }
 

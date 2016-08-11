@@ -15,7 +15,7 @@ export class Menu {
         changeBalloon: {name: 'バルーン', items: this.changeBalloon()},
         inputScript: {name: '開発用 スクリプト入力', callback: () => this.kernel.components.SakuraScriptExecuter.execute(window.prompt('send'))},
         quit: {name: '終了', callback: () => this.kernel.close('user')},
-        quitAll: {name: '全て終了', callback: () => this.kernel.components.NamedKernelManager.closeall('user')},
+        quitAll: {name: '全て終了', callback: () => this.kernel.components.NamedKernelManager.close('user')},
       },
     };
   }

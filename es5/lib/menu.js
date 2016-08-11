@@ -59,7 +59,7 @@ var Menu = exports.Menu = function () {
               return _this.kernel.close('user');
             } },
           quitAll: { name: '全て終了', callback: function callback() {
-              return _this.kernel.components.NamedKernelManager.closeall('user');
+              return _this.kernel.components.NamedKernelManager.close('user');
             } }
         }
       };

@@ -6,12 +6,23 @@ export class SakuraScriptState {
   constructor() {
     this.timerRaiseTimerId = {};
   }
+
+  clearTimerRaise(event) {
+    const id = this.timerRaiseTimerId[event];
+    if (id) clearInterval(id);
+    delete this.timerRaiseTimerId[event];
+  }
+
+  clearAllTimerRaise() {
+    Object.keys(this.timerRaiseTimerId).forEach((event) => this.clearTimerRaise(event));
+  }
 }
 
 export class SakuraScriptRouting {
   setup(routes) {
     routes.controller('SakuraScriptController', (routes) => {
       routes.event('GhostKernel', 'start');
+      routes.event('GhostKernel', 'halt');
       routes.from('SakuraScriptExecuter', (routes) => {
         routes.event('begin_execute');
         routes.event('execute');
@@ -35,6 +46,13 @@ export class SakuraScriptController extends GhostKernelController {
       const value = transaction.response.to('3.0').headers.header.Value;
       if (value != null) this.kernel.components.SakuraScriptExecuter.execute(value.toString());
     };
+  }
+
+  halt() {
+    this.kernel.components.SakuraScriptExecuter.abort();
+    this.kernel.components.SakuraScriptState.clearAllTimerRaise();
+    this.kernel.unregisterComponent('SakuraScriptExecuter');
+    this.kernel.unregisterComponent('SakuraScriptState');
   }
 
   begin_execute() {
@@ -273,17 +291,10 @@ export class SakuraScriptController extends GhostKernelController {
         sakuraScriptState.timerRaiseTimerId[token.event] = setInterval(() => {
           shiorif.get3(token.event, token.references).then(this.kernel.executeSakuraScript);
           if (repeat_count > 0) repeat_count--;
-          if (!repeat_count) {
-            clearInterval(sakuraScriptState.timerRaiseTimerId[token.event]);
-            delete sakuraScriptState.timerRaiseTimerId[token.event];
-          }
+          if (!repeat_count) sakuraScriptState.clearTimerRaise(token.event);
         }, token.period);
       } else {
-        const id = sakuraScriptState.timerRaiseTimerId[token.event];
-        if (id) {
-          clearInterval(id);
-          delete sakuraScriptState.timerRaiseTimerId[token.event];
-        }
+        sakuraScriptState.clearTimerRaise(token.event);
       }
     } else if (token instanceof SakuraScriptToken.Notify) {
       shiorif.notify3(token.event, token.references); // TODO: catch error

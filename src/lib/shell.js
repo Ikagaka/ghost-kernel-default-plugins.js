@@ -35,6 +35,7 @@ export class ShellRouting {
   setup(routes) {
     routes.controller('ShellController', (routes) => {
       routes.event('GhostKernel', 'start');
+      routes.event('GhostKernel', 'halt');
       routes.from('Named', (routes) => {
         routes.event('choiceselect');
         routes.event('anchorselect');
@@ -61,6 +62,11 @@ export class ShellController extends GhostKernelController {
   start() {
     const shellState = new ShellState(this.kernel.components.Named);
     this.kernel.registerComponent('ShellState', shellState);
+  }
+
+  halt() {
+    this.kernel.components.ShellState.clearBalloonTimeout();
+    this.kernel.unregisterComponent('ShellState');
   }
 
   choiceselect(event) {

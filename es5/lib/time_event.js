@@ -39,6 +39,7 @@ var TimeEventRouting = exports.TimeEventRouting = function () {
     value: function setup(routes) {
       routes.controller('TimeEventController', function (routes) {
         routes.event('GhostKernel', 'boot_done', 'enable_time_events'); // TODO いつが最初なのが正しい?
+        routes.event('GhostKernel', 'halt');
         routes.from('TimerEventSource', function (routes) {
           routes.event('second_change');
           routes.event('minute_change');
@@ -75,6 +76,17 @@ var TimeEventController = exports.TimeEventController = function (_GhostKernelCo
     key: 'enable_time_events',
     value: function enable_time_events() {
       this.kernel.components.TimerEventState.enabled = true;
+    }
+  }, {
+    key: 'disable_time_events',
+    value: function disable_time_events() {
+      this.kernel.components.TimerEventState.enabled = false;
+    }
+  }, {
+    key: 'halt',
+    value: function halt() {
+      this.disable_time_events();
+      this.kernel.unregisterComponent('TimerEventState');
     }
   }, {
     key: 'second_change',

@@ -83,6 +83,7 @@ var ShellRouting = exports.ShellRouting = function () {
     value: function setup(routes) {
       routes.controller('ShellController', function (routes) {
         routes.event('GhostKernel', 'start');
+        routes.event('GhostKernel', 'halt');
         routes.from('Named', function (routes) {
           routes.event('choiceselect');
           routes.event('anchorselect');
@@ -116,6 +117,12 @@ var ShellController = exports.ShellController = function (_GhostKernelControlle)
     value: function start() {
       var shellState = new ShellState(this.kernel.components.Named);
       this.kernel.registerComponent('ShellState', shellState);
+    }
+  }, {
+    key: 'halt',
+    value: function halt() {
+      this.kernel.components.ShellState.clearBalloonTimeout();
+      this.kernel.unregisterComponent('ShellState');
     }
   }, {
     key: 'choiceselect',

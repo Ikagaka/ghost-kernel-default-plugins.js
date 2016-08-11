@@ -4,6 +4,7 @@ export class VersionRouting {
   setup(routes) {
     routes.controller('VersionController', (routes) => {
       routes.event('GhostKernel', 'start');
+      routes.event('GhostKernel', 'halt');
     });
   }
 }
@@ -95,6 +96,10 @@ export class VersionController extends GhostKernelController {
           }
         }
       );
+  }
+
+  halt() {
+    this.kernel.unregisterComponent('Version');
   }
 }
 
