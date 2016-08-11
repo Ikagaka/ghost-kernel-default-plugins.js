@@ -78,7 +78,7 @@ var Menu = exports.Menu = function () {
         var name = _ref2[0];
         var dirpath = _ref2[1];
 
-        var disabled = namedKernelManager.isKernelExists(dirpath) || _this2.kernel.namedId === dirpath;
+        var disabled = namedKernelManager.isKernelExists(dirpath) && !_this2.kernel.namedId === dirpath;
         menu['changeGhost-' + dirpath] = {
           name: name,
           disabled: disabled,
@@ -92,8 +92,6 @@ var Menu = exports.Menu = function () {
   }, {
     key: 'callGhost',
     value: function callGhost() {
-      var _this3 = this;
-
       var namedKernelManager = this.kernel.components.NamedKernelManager;
       var ghosts = namedKernelManager.components.GhostList.list;
       var menu = {};
@@ -103,7 +101,7 @@ var Menu = exports.Menu = function () {
         var name = _ref4[0];
         var dirpath = _ref4[1];
 
-        var disabled = namedKernelManager.isKernelExists(dirpath) || _this3.kernel.namedId === dirpath;
+        var disabled = namedKernelManager.isKernelExists(dirpath);
         menu['callGhost-' + dirpath] = {
           name: name,
           disabled: disabled,

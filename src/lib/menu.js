@@ -25,7 +25,7 @@ export class Menu {
     const ghosts = namedKernelManager.components.GhostList.list;
     const menu = {};
     ghosts.forEach(([name, dirpath]) => {
-      const disabled = namedKernelManager.isKernelExists(dirpath) || this.kernel.namedId === dirpath;
+      const disabled = namedKernelManager.isKernelExists(dirpath) && !this.kernel.namedId === dirpath;
       menu[`changeGhost-${dirpath}`] = {
         name,
         disabled,
@@ -42,7 +42,7 @@ export class Menu {
     const ghosts = namedKernelManager.components.GhostList.list;
     const menu = {};
     ghosts.forEach(([name, dirpath]) => {
-      const disabled = namedKernelManager.isKernelExists(dirpath) || this.kernel.namedId === dirpath;
+      const disabled = namedKernelManager.isKernelExists(dirpath);
       menu[`callGhost-${dirpath}`] = {
         name,
         disabled,
