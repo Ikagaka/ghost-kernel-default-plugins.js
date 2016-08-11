@@ -232,6 +232,7 @@ var ShellController = exports.ShellController = function (_GhostKernelControlle)
       // TODO refactor
       var named = this.kernel.components.Named;
       var shellState = this.kernel.components.ShellState;
+      this.kernel.components.SakuraScriptExecuter.balloon_clicked();
       if (shellState.hasChoice) return; // 選択肢があればクリアされない
       if (!shellState.talking) {
         // 喋っていない状態でシングルクリックされたら
