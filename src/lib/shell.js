@@ -178,7 +178,11 @@ export class ShellController extends GhostKernelController {
     event.event.stopPropagation();
     event.event.preventDefault();
     event.event.originalEvent.dataTransfer.dropEffect = 'copy';
-    ev.event.originalEvent.dataTransfer.files.forEach((file) => namedKernelManager.installNamed(file, this.kernel));
+    const files = event.event.originalEvent.dataTransfer.files;
+    for (let i = 0; i < files.length; ++i) {
+      const file = files[i];
+      namedKernelManager.installNamed(file, this.kernel);
+    }
   }
 
   get _timeCritical() {
