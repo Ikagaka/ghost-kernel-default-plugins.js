@@ -303,12 +303,14 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       var blimp = scope.blimp();
       var shiorif = this.kernel.components.Shiorif;
       var sakuraScriptState = this.kernel.components.SakuraScriptState;
+      var shellState = this.kernel.components.ShellState;
       if (token instanceof _sakurascript.SakuraScriptToken.BeFar) {
         // TODO cuttlebone not implemented
       } else if (token instanceof _sakurascript.SakuraScriptToken.BeNear) {
         // TODO cuttlebone not implemented
       } else if (token instanceof _sakurascript.SakuraScriptToken.Clear) {
         blimp.clear();
+        shellState.hasChoice = false;
       } else if (token instanceof _sakurascript.SakuraScriptToken.End) {
         surface.yenE();
       } else if (token instanceof _sakurascript.SakuraScriptToken.OldChoiceEnd) {

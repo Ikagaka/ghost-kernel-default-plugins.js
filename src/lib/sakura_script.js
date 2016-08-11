@@ -236,12 +236,14 @@ export class SakuraScriptController extends GhostKernelController {
     const blimp = scope.blimp();
     const shiorif = this.kernel.components.Shiorif;
     const sakuraScriptState = this.kernel.components.SakuraScriptState;
+    const shellState = this.kernel.components.ShellState;
     if (token instanceof SakuraScriptToken.BeFar) {
       // TODO cuttlebone not implemented
     } else if (token instanceof SakuraScriptToken.BeNear) {
       // TODO cuttlebone not implemented
     } else if (token instanceof SakuraScriptToken.Clear) {
       blimp.clear();
+      shellState.hasChoice = false;
     } else if (token instanceof SakuraScriptToken.End) {
       surface.yenE();
     } else if (token instanceof SakuraScriptToken.OldChoiceEnd) {
