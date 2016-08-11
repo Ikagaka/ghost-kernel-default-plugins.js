@@ -274,10 +274,118 @@ var OperationController = exports.OperationController = function (_GhostKernelCo
     }()
   }, {
     key: 'change_shell',
-    value: function change_shell(shellname) {}
+    value: function () {
+      var _ref4 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(shellname) {
+        var shiorif, shellViewName, shell, profile;
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                shiorif = this.kernel.components.Shiorif;
+                _context4.next = 3;
+                return this.kernel.components.NanikaStorage.shell_name(this.kernel.namedId, shellname);
+
+              case 3:
+                shellViewName = _context4.sent;
+                _context4.next = 6;
+                return shiorif.get3('OnShellChanging', [shellViewName, this.kernel.components.Named.shell.descript.name, '']).then(this.kernel.executeSakuraScript);
+
+              case 6:
+                ; // TODO: path
+
+                _context4.next = 9;
+                return this.kernel.components.NamedKernelManager._get_shell(this.kernel.namedId, shellname);
+
+              case 9:
+                shell = _context4.sent;
+
+                this.kernel.components.Named.changeShell(shell);
+
+                _context4.next = 13;
+                return this.kernel.profile();
+
+              case 13:
+                profile = _context4.sent;
+
+                profile.shellname = shellname;
+                _context4.next = 17;
+                return this.kernel.profile(profile);
+
+              case 17:
+                _context4.next = 19;
+                return shiorif.get3('OnShellChanged', [shellViewName, this.kernel.ghostDescript.name, '']).then(this.kernel.executeSakuraScript);
+
+              case 19:
+                ; // TODO: path
+
+              case 20:
+              case 'end':
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function change_shell(_x4) {
+        return _ref4.apply(this, arguments);
+      }
+
+      return change_shell;
+    }()
   }, {
     key: 'change_balloon',
-    value: function change_balloon(balloonname) {}
+    value: function () {
+      var _ref5 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee5(balloonname) {
+        var balloon, profile, shiorif, balloonViewName;
+        return _regenerator2.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return this.kernel.components.NamedKernelManager._get_balloon(balloonname);
+
+              case 2:
+                balloon = _context5.sent;
+
+                this.kernel.components.Named.changeBalloon(balloon);
+
+                _context5.next = 6;
+                return this.kernel.profile();
+
+              case 6:
+                profile = _context5.sent;
+
+                profile.balloonname = balloonname;
+                _context5.next = 10;
+                return this.kernel.profile(profile);
+
+              case 10:
+                shiorif = this.kernel.components.Shiorif;
+                _context5.next = 13;
+                return this.kernel.components.NanikaStorage.balloon_name(balloonname);
+
+              case 13:
+                balloonViewName = _context5.sent;
+                _context5.next = 16;
+                return shiorif.get3('OnBalloonChange', [balloonViewName, '']).then(this.kernel.executeSakuraScript);
+
+              case 16:
+                ; // TODO: path
+
+              case 17:
+              case 'end':
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function change_balloon(_x5) {
+        return _ref5.apply(this, arguments);
+      }
+
+      return change_balloon;
+    }()
   }]);
   return OperationController;
 }(_ghostKernel.GhostKernelController);

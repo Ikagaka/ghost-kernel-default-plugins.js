@@ -81,10 +81,32 @@ export class OperationController extends GhostKernelController {
     this.kernel.unregisterComponent('GhostKernel');
   }
 
-  change_shell(shellname) {
+  async change_shell(shellname) {
+    const shiorif = this.kernel.components.Shiorif;
+    const shellViewName = await this.kernel.components.NanikaStorage.shell_name(this.kernel.namedId, shellname);
+    await shiorif.get3('OnShellChanging', [shellViewName, this.kernel.components.Named.shell.descript.name, '']).then(this.kernel.executeSakuraScript);; // TODO: path
+
+    const shell = await this.kernel.components.NamedKernelManager._get_shell(this.kernel.namedId, shellname);
+    this.kernel.components.Named.changeShell(shell);
+
+    const profile = await this.kernel.profile();
+    profile.shellname = shellname;
+    await this.kernel.profile(profile);
+
+    await shiorif.get3('OnShellChanged', [shellViewName, this.kernel.ghostDescript.name, '']).then(this.kernel.executeSakuraScript);; // TODO: path
   }
 
-  change_balloon(balloonname) {
+  async change_balloon(balloonname) {
+    const balloon = await this.kernel.components.NamedKernelManager._get_balloon(balloonname);
+    this.kernel.components.Named.changeBalloon(balloon);
+
+    const profile = await this.kernel.profile();
+    profile.balloonname = balloonname;
+    await this.kernel.profile(profile);
+
+    const shiorif = this.kernel.components.Shiorif;
+    const balloonViewName = await this.kernel.components.NanikaStorage.balloon_name(balloonname);
+    await shiorif.get3('OnBalloonChange', [balloonViewName, '']).then(this.kernel.executeSakuraScript);; // TODO: path
   }
 }
 

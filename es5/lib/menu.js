@@ -131,7 +131,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            // TODO
+            this.kernel.changeShell(dirpath);
           }
         };
       });
@@ -155,7 +155,7 @@ var Menu = exports.Menu = function () {
           name: name,
           disabled: disabled,
           callback: function callback() {
-            // TODO
+            this.kernel.changeBalloon(dirpath);
           }
         };
       });

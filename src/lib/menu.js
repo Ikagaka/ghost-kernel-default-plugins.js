@@ -66,7 +66,7 @@ export class Menu {
         name,
         disabled,
         callback() {
-          // TODO
+          this.kernel.changeShell(dirpath);
         },
       };
     });
@@ -84,7 +84,7 @@ export class Menu {
         name,
         disabled,
         callback() {
-          // TODO
+          this.kernel.changeBalloon(dirpath);
         },
       };
     });
