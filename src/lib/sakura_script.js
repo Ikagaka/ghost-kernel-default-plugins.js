@@ -43,7 +43,17 @@ export class SakuraScriptController extends GhostKernelController {
     this.kernel.registerComponent('SakuraScriptState', new SakuraScriptState());
     // make shortcut
     this.kernel.executeSakuraScript = async (transaction) => {
-      const value = transaction.response.to('3.0').headers.header.Value;
+      let value = transaction.response.to('3.0').headers.header.Value;
+      const requestHeaders = transaction.request.to('3.0').headers;
+      // OnTranslate
+      const translateTransaction = await this.kernel.components.Shiorif.get3('OnTranslate', [
+        value,
+        '', // TODO: Reference1
+        requestHeaders.header.ID,
+        requestHeaders.references().join('\x01'),
+      ]);
+      const translateResponse = translateTransaction.response.to('3.0');
+      if (translateResponse.status_line.code === 200) value = translateResponse.headers.header.Value;
       if (value != null) await this.kernel.components.SakuraScriptExecuter.execute(value.toString());
     };
   }

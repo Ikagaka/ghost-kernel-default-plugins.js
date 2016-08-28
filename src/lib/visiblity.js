@@ -18,6 +18,7 @@ export class Visibility extends EventEmitter {
    * @param {boolean} auto 自動で可視性を判定する Page Visibility APIがある場合はデフォルトで真
    */
   constructor(initialVisibility, auto = typeof document !== 'undefined') {
+    super();
     if (initialVisibility !== undefined) {
       this._visibility = initialVisibility;
     }

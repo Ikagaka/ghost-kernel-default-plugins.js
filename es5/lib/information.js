@@ -171,6 +171,10 @@ var SiteMenu = exports.SiteMenu = function () {
    */
 
   function SiteMenu(name, url, banner, script) {
+    console.assert(typeof name === "string", 'Invalid JSDoc @param: typeof name === "string"');
+    console.assert(typeof url === "string", 'Invalid JSDoc @param: typeof url === "string"');
+    console.assert(typeof banner === "string", 'Invalid JSDoc @param: typeof banner === "string"');
+    console.assert(typeof script === "string", 'Invalid JSDoc @param: typeof script === "string"');
     (0, _classCallCheck3.default)(this, SiteMenu);
 
     this._name = name;

@@ -62,6 +62,8 @@ var ghostKernelDefaultPlugins =
 	__webpack_require__(132);
 	
 	__webpack_require__(133);
+	
+	__webpack_require__(138);
 
 /***/ },
 /* 1 */
@@ -3792,6 +3794,10 @@ var ghostKernelDefaultPlugins =
 	   */
 	
 	  function SiteMenu(name, url, banner, script) {
+	    console.assert(typeof name === "string", 'Invalid JSDoc @param: typeof name === "string"');
+	    console.assert(typeof url === "string", 'Invalid JSDoc @param: typeof url === "string"');
+	    console.assert(typeof banner === "string", 'Invalid JSDoc @param: typeof banner === "string"');
+	    console.assert(typeof script === "string", 'Invalid JSDoc @param: typeof script === "string"');
 	    (0, _classCallCheck3.default)(this, SiteMenu);
 	
 	    this._name = name;
@@ -4520,22 +4526,34 @@ var ghostKernelDefaultPlugins =
 	      // make shortcut
 	      this.kernel.executeSakuraScript = function () {
 	        var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(transaction) {
-	          var value;
+	          var value, requestHeaders, translateTransaction, translateResponse;
 	          return _regenerator2.default.wrap(function _callee$(_context) {
 	            while (1) {
 	              switch (_context.prev = _context.next) {
 	                case 0:
 	                  value = transaction.response.to('3.0').headers.header.Value;
+	                  requestHeaders = transaction.request.to('3.0').headers;
+	                  // OnTranslate
+	
+	                  _context.next = 4;
+	                  return _this3.kernel.components.Shiorif.get3('OnTranslate', [value, '', // TODO: Reference1
+	                  requestHeaders.header.ID, requestHeaders.references().join('\x01')]);
+	
+	                case 4:
+	                  translateTransaction = _context.sent;
+	                  translateResponse = translateTransaction.response.to('3.0');
+	
+	                  if (translateResponse.status_line.code === 200) value = translateResponse.headers.header.Value;
 	
 	                  if (!(value != null)) {
-	                    _context.next = 4;
+	                    _context.next = 10;
 	                    break;
 	                  }
 	
-	                  _context.next = 4;
+	                  _context.next = 10;
 	                  return _this3.kernel.components.SakuraScriptExecuter.execute(value.toString());
 	
-	                case 4:
+	                case 10:
 	                case 'end':
 	                  return _context.stop();
 	              }
@@ -10374,6 +10392,158 @@ var ghostKernelDefaultPlugins =
 	    || '@@iterator' in O
 	    || Iterators.hasOwnProperty(classof(O));
 	};
+
+/***/ },
+/* 138 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.VisibilityController = exports.Visibility = exports.VisibilityRouting = undefined;
+	
+	var _getPrototypeOf = __webpack_require__(70);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(74);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(92);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _classCallCheck2 = __webpack_require__(99);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(100);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _ghostKernel = __webpack_require__(104);
+	
+	var _events = __webpack_require__(112);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var VisibilityRouting = exports.VisibilityRouting = function () {
+	  function VisibilityRouting() {
+	    (0, _classCallCheck3.default)(this, VisibilityRouting);
+	  }
+	
+	  (0, _createClass3.default)(VisibilityRouting, [{
+	    key: 'setup',
+	    value: function setup(routes) {
+	      routes.controller('VisibilityController', function (routes) {
+	        routes.event('GhostKernel', 'start');
+	        routes.event('GhostKernel', 'halt');
+	        routes.event('Visibility', 'visibilityChange');
+	      });
+	    }
+	  }]);
+	  return VisibilityRouting;
+	}();
+	
+	/** 可視性モデル */
+	
+	
+	var Visibility = exports.Visibility = function (_EventEmitter) {
+	  (0, _inherits3.default)(Visibility, _EventEmitter);
+	
+	  /**
+	   * @param {boolean} initialVisibility 初期可視状態 autoが真の時は無視される
+	   * @param {boolean} auto 自動で可視性を判定する Page Visibility APIがある場合はデフォルトで真
+	   */
+	
+	  function Visibility(initialVisibility) {
+	    var auto = arguments.length <= 1 || arguments[1] === undefined ? typeof document !== 'undefined' : arguments[1];
+	    console.assert(typeof initialVisibility === "boolean", 'Invalid JSDoc @param: typeof initialVisibility === "boolean"');
+	    console.assert(typeof auto === "boolean", 'Invalid JSDoc @param: typeof auto === "boolean"');
+	    (0, _classCallCheck3.default)(this, Visibility);
+	
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Visibility).call(this));
+	
+	    if (initialVisibility !== undefined) {
+	      _this._visibility = initialVisibility;
+	    }
+	    // hidden プロパティおよび可視性の変更イベントの名前を設定
+	    if (typeof document.hidden !== "undefined") {
+	      // Opera 12.10 や Firefox 18 以降でサポート
+	      _this.hiddenProperty = "hidden";
+	      _this.visibilityChangeProperty = "visibilitychange";
+	    } else if (typeof document.mozHidden !== "undefined") {
+	      _this.hiddenProperty = "mozHidden";
+	      _this.visibilityChangeProperty = "mozvisibilitychange";
+	    } else if (typeof document.msHidden !== "undefined") {
+	      _this.hiddenProperty = "msHidden";
+	      _this.visibilityChangeProperty = "msvisibilitychange";
+	    } else if (typeof document.webkitHidden !== "undefined") {
+	      _this.hiddenProperty = "webkitHidden";
+	      _this.visibilityChangeProperty = "webkitvisibilitychange";
+	    }
+	    if (typeof document[_this.hiddenProperty] !== 'undefined') {
+	      document.addEventListener(_this.visibilityChangeProperty, _this._nativeVisibilityChange.bind(_this), false);
+	    }
+	    _this._visibility = !document[_this.hiddenProperty];
+	    return _this;
+	  }
+	
+	  (0, _createClass3.default)(Visibility, [{
+	    key: '_nativeVisibilityChange',
+	    value: function _nativeVisibilityChange() {
+	      this.visibility = !document[this.hiddenProperty];
+	    }
+	  }, {
+	    key: 'visibility',
+	    set: function set(visibility) {
+	      var needEmit = this._visibility !== !!visibility;
+	      this._visibility = !!visibility;
+	      if (needEmit) this.emit('visibilityChange', this._visibility);
+	    },
+	    get: function get() {
+	      return this._visibility;
+	    }
+	  }]);
+	  return Visibility;
+	}(_events.EventEmitter);
+	
+	var VisibilityController = exports.VisibilityController = function (_GhostKernelControlle) {
+	  (0, _inherits3.default)(VisibilityController, _GhostKernelControlle);
+	
+	  function VisibilityController(kernel) {
+	    (0, _classCallCheck3.default)(this, VisibilityController);
+	    return (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(VisibilityController).call(this, kernel));
+	  }
+	
+	  (0, _createClass3.default)(VisibilityController, [{
+	    key: 'start',
+	    value: function start() {
+	      kernel.registerComponent('Visibility', new Visibility());
+	    }
+	  }, {
+	    key: 'halt',
+	    value: function halt() {
+	      kernel.unregisterComponent('Visibility');
+	    }
+	  }, {
+	    key: 'visibilityChange',
+	    value: function visibilityChange(visibility) {
+	      if (visibility) {
+	        this.kernel.components.Shiorif.get3('OnWindowStateRestore').then(this.kernel.executeSakuraScript);
+	      } else {
+	        this.kernel.components.Shiorif.get3('OnWindowStateMinimize').then(this.kernel.executeSakuraScript);
+	      }
+	    }
+	  }]);
+	  return VisibilityController;
+	}(_ghostKernel.GhostKernelController);
+	
+	_ghostKernel.GhostKernelControllers.VisibilityController = VisibilityController;
+	_ghostKernel.GhostKernelRoutings.push(VisibilityRouting);
 
 /***/ }
 /******/ ]);

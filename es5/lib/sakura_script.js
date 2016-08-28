@@ -117,22 +117,34 @@ var SakuraScriptController = exports.SakuraScriptController = function (_GhostKe
       // make shortcut
       this.kernel.executeSakuraScript = function () {
         var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(transaction) {
-          var value;
+          var value, requestHeaders, translateTransaction, translateResponse;
           return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
                 case 0:
                   value = transaction.response.to('3.0').headers.header.Value;
+                  requestHeaders = transaction.request.to('3.0').headers;
+                  // OnTranslate
+
+                  _context.next = 4;
+                  return _this3.kernel.components.Shiorif.get3('OnTranslate', [value, '', // TODO: Reference1
+                  requestHeaders.header.ID, requestHeaders.references().join('\x01')]);
+
+                case 4:
+                  translateTransaction = _context.sent;
+                  translateResponse = translateTransaction.response.to('3.0');
+
+                  if (translateResponse.status_line.code === 200) value = translateResponse.headers.header.Value;
 
                   if (!(value != null)) {
-                    _context.next = 4;
+                    _context.next = 10;
                     break;
                   }
 
-                  _context.next = 4;
+                  _context.next = 10;
                   return _this3.kernel.components.SakuraScriptExecuter.execute(value.toString());
 
-                case 4:
+                case 10:
                 case 'end':
                   return _context.stop();
               }
