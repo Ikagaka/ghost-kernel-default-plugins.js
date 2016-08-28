@@ -19,10 +19,14 @@ export class Visibility extends EventEmitter {
    */
   constructor(initialVisibility = true, auto = typeof document !== 'undefined') {
     super();
+    this._nativeVisibilityChange = this._nativeVisibilityChange.bind(this);
     if (initialVisibility !== undefined) {
       this._visibility = initialVisibility;
     }
-    if (!auto) return;
+    if (auto) this.watchVisibility();
+  }
+
+  watchVisibility() {
     // hidden プロパティおよび可視性の変更イベントの名前を設定
     if (typeof document.hidden !== "undefined") { // Opera 12.10 や Firefox 18 以降でサポート
       this.hiddenProperty = "hidden";
@@ -38,9 +42,13 @@ export class Visibility extends EventEmitter {
       this.visibilityChangeProperty = "webkitvisibilitychange";
     }
     if (typeof document[this.hiddenProperty] !== 'undefined') {
-      document.addEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange.bind(this), false);
+      document.addEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange, false);
       this._visibility = !document[this.hiddenProperty];
     }
+  }
+
+  unwatchVisibility() {
+    document.removeEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange, false);
   }
 
   _nativeVisibilityChange() {
@@ -64,11 +72,12 @@ export class VisibilityController extends GhostKernelController {
   }
 
   start() {
-    kernel.registerComponent('Visibility', new Visibility());
+    this.kernel.registerComponent('Visibility', new Visibility());
   }
 
   halt() {
-    kernel.unregisterComponent('Visibility');
+    this.kernel.components.Visibility.unwatchVisibility();
+    this.kernel.unregisterComponent('Visibility');
   }
 
   visibilityChange(visibility) {

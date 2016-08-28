@@ -69,33 +69,43 @@ var Visibility = exports.Visibility = function (_EventEmitter) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Visibility).call(this));
 
+    _this._nativeVisibilityChange = _this._nativeVisibilityChange.bind(_this);
     if (initialVisibility !== undefined) {
       _this._visibility = initialVisibility;
     }
-    if (!auto) return (0, _possibleConstructorReturn3.default)(_this);
-    // hidden プロパティおよび可視性の変更イベントの名前を設定
-    if (typeof document.hidden !== "undefined") {
-      // Opera 12.10 や Firefox 18 以降でサポート
-      _this.hiddenProperty = "hidden";
-      _this.visibilityChangeProperty = "visibilitychange";
-    } else if (typeof document.mozHidden !== "undefined") {
-      _this.hiddenProperty = "mozHidden";
-      _this.visibilityChangeProperty = "mozvisibilitychange";
-    } else if (typeof document.msHidden !== "undefined") {
-      _this.hiddenProperty = "msHidden";
-      _this.visibilityChangeProperty = "msvisibilitychange";
-    } else if (typeof document.webkitHidden !== "undefined") {
-      _this.hiddenProperty = "webkitHidden";
-      _this.visibilityChangeProperty = "webkitvisibilitychange";
-    }
-    if (typeof document[_this.hiddenProperty] !== 'undefined') {
-      document.addEventListener(_this.visibilityChangeProperty, _this._nativeVisibilityChange.bind(_this), false);
-      _this._visibility = !document[_this.hiddenProperty];
-    }
+    if (auto) _this.watchVisibility();
     return _this;
   }
 
   (0, _createClass3.default)(Visibility, [{
+    key: 'watchVisibility',
+    value: function watchVisibility() {
+      // hidden プロパティおよび可視性の変更イベントの名前を設定
+      if (typeof document.hidden !== "undefined") {
+        // Opera 12.10 や Firefox 18 以降でサポート
+        this.hiddenProperty = "hidden";
+        this.visibilityChangeProperty = "visibilitychange";
+      } else if (typeof document.mozHidden !== "undefined") {
+        this.hiddenProperty = "mozHidden";
+        this.visibilityChangeProperty = "mozvisibilitychange";
+      } else if (typeof document.msHidden !== "undefined") {
+        this.hiddenProperty = "msHidden";
+        this.visibilityChangeProperty = "msvisibilitychange";
+      } else if (typeof document.webkitHidden !== "undefined") {
+        this.hiddenProperty = "webkitHidden";
+        this.visibilityChangeProperty = "webkitvisibilitychange";
+      }
+      if (typeof document[this.hiddenProperty] !== 'undefined') {
+        document.addEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange, false);
+        this._visibility = !document[this.hiddenProperty];
+      }
+    }
+  }, {
+    key: 'unwatchVisibility',
+    value: function unwatchVisibility() {
+      document.removeEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange, false);
+    }
+  }, {
     key: '_nativeVisibilityChange',
     value: function _nativeVisibilityChange() {
       this.visibility = !document[this.hiddenProperty];
@@ -125,12 +135,13 @@ var VisibilityController = exports.VisibilityController = function (_GhostKernel
   (0, _createClass3.default)(VisibilityController, [{
     key: 'start',
     value: function start() {
-      kernel.registerComponent('Visibility', new Visibility());
+      this.kernel.registerComponent('Visibility', new Visibility());
     }
   }, {
     key: 'halt',
     value: function halt() {
-      kernel.unregisterComponent('Visibility');
+      this.kernel.components.Visibility.unwatchVisibility();
+      this.kernel.unregisterComponent('Visibility');
     }
   }, {
     key: 'visibilityChange',
