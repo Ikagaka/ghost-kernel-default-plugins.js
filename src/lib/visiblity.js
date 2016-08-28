@@ -17,11 +17,12 @@ export class Visibility extends EventEmitter {
    * @param {boolean} initialVisibility 初期可視状態 autoが真の時は無視される
    * @param {boolean} auto 自動で可視性を判定する Page Visibility APIがある場合はデフォルトで真
    */
-  constructor(initialVisibility, auto = typeof document !== 'undefined') {
+  constructor(initialVisibility = true, auto = typeof document !== 'undefined') {
     super();
     if (initialVisibility !== undefined) {
       this._visibility = initialVisibility;
     }
+    if (!auto) return;
     // hidden プロパティおよび可視性の変更イベントの名前を設定
     if (typeof document.hidden !== "undefined") { // Opera 12.10 や Firefox 18 以降でサポート
       this.hiddenProperty = "hidden";
@@ -38,8 +39,8 @@ export class Visibility extends EventEmitter {
     }
     if (typeof document[this.hiddenProperty] !== 'undefined') {
       document.addEventListener(this.visibilityChangeProperty, this._nativeVisibilityChange.bind(this), false);
+      this._visibility = !document[this.hiddenProperty];
     }
-    this._visibility = !document[this.hiddenProperty];
   }
 
   _nativeVisibilityChange() {

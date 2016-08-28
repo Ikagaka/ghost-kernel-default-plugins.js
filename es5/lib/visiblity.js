@@ -60,7 +60,8 @@ var Visibility = exports.Visibility = function (_EventEmitter) {
    * @param {boolean} auto 自動で可視性を判定する Page Visibility APIがある場合はデフォルトで真
    */
 
-  function Visibility(initialVisibility) {
+  function Visibility() {
+    var initialVisibility = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
     var auto = arguments.length <= 1 || arguments[1] === undefined ? typeof document !== 'undefined' : arguments[1];
     console.assert(typeof initialVisibility === "boolean", 'Invalid JSDoc @param: typeof initialVisibility === "boolean"');
     console.assert(typeof auto === "boolean", 'Invalid JSDoc @param: typeof auto === "boolean"');
@@ -71,6 +72,7 @@ var Visibility = exports.Visibility = function (_EventEmitter) {
     if (initialVisibility !== undefined) {
       _this._visibility = initialVisibility;
     }
+    if (!auto) return (0, _possibleConstructorReturn3.default)(_this);
     // hidden プロパティおよび可視性の変更イベントの名前を設定
     if (typeof document.hidden !== "undefined") {
       // Opera 12.10 や Firefox 18 以降でサポート
@@ -88,8 +90,8 @@ var Visibility = exports.Visibility = function (_EventEmitter) {
     }
     if (typeof document[_this.hiddenProperty] !== 'undefined') {
       document.addEventListener(_this.visibilityChangeProperty, _this._nativeVisibilityChange.bind(_this), false);
+      _this._visibility = !document[_this.hiddenProperty];
     }
-    _this._visibility = !document[_this.hiddenProperty];
     return _this;
   }
 
