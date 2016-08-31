@@ -7,10 +7,6 @@ import {VersionRouting, Version, VersionController} from '../src/lib/version';
 
 import assert from 'power-assert';
 
-console.log('log');
-console.info('info');
-console.error('error');
-
 describe('VersionController', function() {
   lazy('events', function() {
     return {
